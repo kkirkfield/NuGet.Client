@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace NuGet.Configuration
 {
-    internal class PackageSourceMappingProvider
+    public class PackageSourceMappingProvider
     {
         private readonly ISettings _settings;
 
@@ -57,6 +57,54 @@ namespace NuGet.Configuration
             _settings.AddOrUpdate(ConfigurationConstants.PackageSourceMapping, packageSourceMappingSourceItem);
 
             _settings.SaveToDisk();
+        }
+
+        public void SavePackageSourceMappings(IReadOnlyList<PackageSourceMappingSourceItem> mappings)
+        {
+            if (mappings == null)
+            {
+                throw new ArgumentNullException(nameof(mappings));
+            }
+#pragma warning disable CS0618 // Type or member is obsolete
+            SavePackageSourcesMappings(mappings, PackageSourceUpdateOptions.Default);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        [Obsolete("https://github.com/NuGet/Home/issues/10098")]
+        public void SavePackageSourcesMappings(IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems, PackageSourceUpdateOptions sourceUpdateSettings)
+        {
+            if (packageSourceMappingsSourceItems == null)
+            {
+                throw new ArgumentNullException(nameof(packageSourceMappingsSourceItems));
+            }
+
+
+            var existingSettingsLookup = GetPackageSourceMappingItems();
+
+            foreach (var sourceMappingItem in packageSourceMappingsSourceItems)
+            {
+                //add or update for all mappings in new mappings
+                //Do I need to check to see if item has changed??
+                if (existingSettingsLookup != null)
+                {
+                    AddOrUpdatePackageSourceMappingSourceItem(sourceMappingItem);
+                }
+            }
+
+            //Remove all old mappings not in new mappings
+            if (existingSettingsLookup != null)
+            {
+                IReadOnlyList<PackageSourceMappingSourceItem> removeMappings = null;
+                foreach (var sourceItem in existingSettingsLookup)
+                {
+                    if (!packageSourceMappingsSourceItems.Contains(sourceItem))
+                    {
+                        //Remove(sourceItem);
+                        removeMappings.Append(sourceItem);
+                    }
+                }
+                Remove(removeMappings);
+            }
         }
     }
 }

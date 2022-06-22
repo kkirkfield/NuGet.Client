@@ -1,0 +1,218 @@
+<UserControl x:Class="NuGet.Options.PackageSourceMappingOptionsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NuGet.Options"
+             xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+  <!--make new class that implements icommand-->
+
+  <Grid Margin="12">
+
+    <Grid.Resources>
+      <XmlDataProvider x:Key="SourcesList" XPath="Sources">
+        <x:XData>
+          <Sources xmlns="">
+            <Source name="source0"/>
+            <Source name="source1"/>
+          </Sources>
+        </x:XData>
+      </XmlDataProvider>
+    </Grid.Resources>
+
+
+
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <ListBox Name="packageList" Grid.Row="0" />
+
+
+
+    <Grid Grid.Row="1">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="124"/>
+        <ColumnDefinition Width="124"/>
+        <ColumnDefinition Width="124"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="1" Width="100" Height="25" Command="{Binding ShowButtonCommand}">Add</Button>
+
+      <Button Grid.Column="2" Width="100" Height="25" Command="{Binding RemoveButtonCommand}">Remove</Button>
+
+      <Button  Grid.Column="3" Width="100" Height="25" Command="{Binding ClearButtonCommand}">Clear</Button>
+
+
+    </Grid>
+
+
+
+
+
+
+
+    <Popup Name="MyPopup"
+              
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               AllowsTransparency="True"
+               >
+      
+        <Grid  Height="168" Width="456" Background="White">
+
+          <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Grid.Row="0">
+            <Grid Name="TitleGrid"  >
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="*" ></ColumnDefinition>
+                <ColumnDefinition Width="50" ></ColumnDefinition>
+              </Grid.ColumnDefinitions>
+              <TextBlock x:Uid="TitleTextBlock"
+                           Grid.Column="0"
+                           Text="Add New Azure Cloud"
+                           Margin="12,5,0,0"/>
+
+
+            </Grid>
+
+
+          </StackPanel>
+
+          <StackPanel Grid.Row="1">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition  Width="12" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition  Height="35"/>
+                <RowDefinition  Height="*"/>
+                <RowDefinition Height="35"/>
+              </Grid.RowDefinitions>
+
+              <TextBox Grid.Row="0" Grid.Column="1" Name="packageID"  >
+                Add valid namespace
+              </TextBox>
+
+
+              <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+                <Label Name ="Label"
+                           Margin="0,12,0,5"
+                           Padding="0"
+                            Background="MistyRose" />
+                <Grid >
+                  <!-- <ComboBox Name ="sources" Margin="0,0,0,9"> -->
+                  <!--  <ScrollViewer VerticalScrollBarVisibility="Auto" Height="60" Visibility="Visible">
+                  <ListBox Margin="0,0,0,9" SelectionMode="Multiple" Name="sourcesListBox" ItemsSource="{Binding XPath=@Names}" >
+                    <ListBoxItem>Nuget</ListBoxItem>
+                    <ListBoxItem>Microsoft</ListBoxItem>
+                    <ListBoxItem>contoso</ListBoxItem>
+                    <ListBoxItem>new namespace</ListBoxItem>
+                    <ListBoxItem>h</ListBoxItem>
+                    <ListBoxItem>f</ListBoxItem>
+                  </ListBox>
+                </ScrollViewer> -->
+
+                  <!--         <ComboBox.ItemTemplate >
+                                        <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <CheckBox x:Name="chkBox" Width="20"/>
+                                                     <Label x:Name ="sourceLabel" Width="100" Background="SandyBrown" Command="{Binding IsCheckedCommand}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                      </ComboBox.ItemTemplate> /> -->
+                  <!--    </ComboBox> -->
+                <ListView Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Height="60">
+                  <!--<ListView.Style>
+                    <Style TargetType="{x:Type ListView}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type ListView}">
+
+                            <ScrollViewer >
+
+                            </ScrollViewer>
+                            <ControlTemplate.Triggers>
+                              <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                  <Condition Property="IsGrouping" Value="true"/>
+                                  <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                              </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </ListView.Style>-->
+
+                  <ListView.View>
+                    <GridView>
+                      <!-- checkbox column -->
+                      <GridViewColumn>
+                        <GridViewColumn.Header>
+                          <GridViewColumnHeader>
+                            <CheckBox
+                  KeyboardNavigation.TabIndex="0"
+                  IsChecked="{Binding IsCheckedCommand}"/>
+                          </GridViewColumnHeader>
+                        </GridViewColumn.Header>
+
+                        <GridViewColumn.CellTemplate>
+                          <DataTemplate>
+                            <CheckBox
+                  IsTabStop="False"
+                  IsChecked="{Binding IsSelected}"/>
+                          </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                      </GridViewColumn>
+
+                      <!-- the project column -->
+                      <GridViewColumn x:Name="_projectColumn">
+                        <GridViewColumnHeader/>
+                        <GridViewColumn.CellTemplate>
+                          <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                              <TextBlock
+                                Text="{Binding}" />
+                            </StackPanel>
+                          </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                      </GridViewColumn>
+                    </GridView>
+                  </ListView.View>
+                </ListView>
+              </Grid>
+              </StackPanel>
+
+              <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
+                <Button Name="AddCloud" Height="23" Width="75" Content="_Add"  Command="{Binding AddButtonCommand}" />
+                <Button Name="CancelClose" Height="23" Width="75"  Command ="{Binding HideButtonCommand}">
+                  Close
+                </Button>
+              </StackPanel>
+
+            </Grid>
+          </StackPanel>
+        </Grid>
+    </Popup>
+  </Grid>
+</UserControl>
