@@ -12,10 +12,10 @@ namespace NuGet.Options
     internal class PackageItem
     {
         private string _id;
-        private IList _sources;
+        private IList<string> _sources;
 
 
-        public PackageItem(string packageid, IList packagesources)
+        public PackageItem(string packageid, IList<string> packagesources)
         {
             _id = packageid;
             _sources = packagesources;
@@ -25,7 +25,7 @@ namespace NuGet.Options
             return _id;
         }
 
-        public IList GetSources()
+        public IList<string> GetSources()
         {
             return _sources;
         }

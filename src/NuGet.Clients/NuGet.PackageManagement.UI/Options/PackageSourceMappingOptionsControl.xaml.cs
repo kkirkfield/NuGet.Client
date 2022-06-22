@@ -46,7 +46,7 @@ namespace NuGet.Options
     public partial class PackageSourceMappingOptionsControl : UserControl
     {
 
-        public ObservableCollection<PackageSourceContextInfo> SourcesCollection { get; private set; } //change to package s
+        public ItemsChangeObservableCollection<PackageSourceContextInfo> SourcesCollection { get; private set; } //change to package s
 
         private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
 
@@ -67,7 +67,7 @@ namespace NuGet.Options
 
         public ICommand ClearButtonCommand { get; set; }
 
-        public  IReadOnlyDictionary<string, IReadOnlyList<string>> _sourceMappings = new Dictionary<string, IReadOnlyList<string>>();
+        private Dictionary<string, List<string>> _sourceMappings;
 
         public PackageSourceMappingOptionsControl()
         {
@@ -82,12 +82,17 @@ namespace NuGet.Options
             ClearButtonCommand = new ClearButtonCommand(ExecuteClearButtonCommand, CanExecuteClearButtonCommand);
 
 
+
             // SourcesCollection = new ObservableCollection<object>();
             DataContext = this;
+            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextInfo>();
+
+
 
             InitializeComponent();
 
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
+            _sourceMappings = new Dictionary<string, List<string>>();
         }
 
         internal async Task InitializeOnActivatedAsync(CancellationToken cancellationToken)
@@ -107,7 +112,15 @@ namespace NuGet.Options
 
             _originalPackageSources = await _nugetSourcesService.GetPackageSourcesAsync(cancellationToken);
 
-            SourcesCollection = new ObservableCollection<PackageSourceContextInfo>(_originalPackageSources);
+            //SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextInfo>(_originalPackageSources);
+            foreach (var source in _originalPackageSources)
+            {
+                SourcesCollection.Add(source);
+            }
+
+            //SourcesCollection.Refresh();
+
+            //add an event on sourcecollection --> collections changed
 
             //add a raised property changed
 
@@ -151,10 +164,15 @@ namespace NuGet.Options
         {
             MyPopup.IsOpen = false;
             var tempPkgID = packageID.Text;
-            var temp = sourcesListBox.SelectedItems;
+            List<string> temp = sourcesListBox.SelectedItems as List<string>;
+            // temp = (List<string>)temp;
+            //source mappings keeeps getting reset when okay button is clicked because it says new ... in the constructor
+            //soln --> read directly from UI and not from a field in apply changed settings
+            _sourceMappings[tempPkgID] = temp;
 
-            PackageItem tempPkg = new PackageItem(tempPkgID, temp);
-            packageList.Items.Add(tempPkg);
+            // PackageItem tempPkg = new PackageItem(tempPkgID, temp);
+            packageList.Items.Add(tempPkgID);
+            //ReadPackageItemToDictonary(packageList);
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
             (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
             (ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
@@ -235,7 +253,8 @@ namespace NuGet.Options
                 packageSourceMappingsSourceItems.Append(mappingSourceItem);
             }*/
 
-            IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = ReadMappingsFromUIToConfig(packageList);
+            //Dictionary<string, List<string>> packageList = new Dictionary<string, List<string>>();
+            IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = ReadMappingsFromUIToConfig(_sourceMappings);
 
 
 
@@ -336,5 +355,17 @@ namespace NuGet.Options
             }
             return packageSourceMappingsSourceItems;
         }
+
+        /* private Dictionary<string, List<string>> ReadPackageItemToDictonary(List<PackageItem> packageItemList)
+        {
+            Dictionary<string, List<string>> list = new Dictionary<string, List<string>>();
+            foreach (PackageItem packageItem in packageItemList)
+            {
+                list[packageItem.GetID()] = (List<string>)packageItem.GetSources();
+            }
+            _sourceMappings = list;
+            return list;
+        }*/
+
     }
 }

@@ -30,7 +30,16 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <ListBox Name="packageList" Grid.Row="0" />
+    <ListBox Name="packageList" Grid.Row="0" >
+      <!--<DataTemplate>
+        <StackPanel>
+          <TextBlock ContentElement.="{Binding }"></TextBlock>
+          <ListBox>
+            
+          </ListBox>
+        </StackPanel>
+      </DataTemplate>-->
+    </ListBox>
 
 
 
@@ -203,16 +212,19 @@
               </Grid>
               </StackPanel>
 
-              <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
-                <Button Name="AddCloud" Height="23" Width="75" Content="_Add"  Command="{Binding AddButtonCommand}" />
-                <Button Name="CancelClose" Height="23" Width="75"  Command ="{Binding HideButtonCommand}">
-                  Close
-                </Button>
-              </StackPanel>
+             
 
             </Grid>
           </StackPanel>
-        </Grid>
+
+        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
+          <Button Name="AddCloud" Height="23" Width="75" Content="_Add"  Command="{Binding AddButtonCommand}" />
+          <Button Name="CancelClose" Height="23" Width="75"  Command ="{Binding HideButtonCommand}">
+            Close
+          </Button>
+        </StackPanel>
+          
+      </Grid>
     </Popup>
   </Grid>
 </UserControl>

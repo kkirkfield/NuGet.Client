@@ -21,6 +21,7 @@ namespace NuGet.Options
     /// The Tools>Options page for "Package Source Mapping".
     /// </summary>
     [Guid("F175964E-89F5-4521-8FE2-C10C07BB968C")]
+
     public class PackageSourceMappingOptionsPage : UIElementDialogPage
     {
         private Lazy<PackageSourceMappingOptionsControl> _packageSourceMappingOptionsControl;
@@ -48,8 +49,6 @@ namespace NuGet.Options
         /// immediately hits enter causing the window to close without firing the combobox LostFocus event.
         /// </summary>
         /// <param name="e">Event arguments.</param>
-        ///
-
 
         protected override void OnApply(PageApplyEventArgs e)
         {
@@ -61,7 +60,6 @@ namespace NuGet.Options
                 e.ApplyBehavior = ApplyKind.CancelNoNavigate;
             }
         }
-
 
         /// <summary>
         /// This method is called when VS wants to activate this page.
@@ -93,7 +91,7 @@ namespace NuGet.Options
         {
             get
             {
-                return new PackageSourceMappingOptionsControl();
+                return _packageSourceMappingOptionsControl.Value;
             }
         }
     }
