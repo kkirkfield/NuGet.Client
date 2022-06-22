@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using NuGet.VisualStudio.Internal.Contracts;
 
 namespace NuGet.Options
 {
     internal class PackageItem
     {
         private string _id;
-        private IList<string> _sources;
+        private ObservableCollection<PackageSourceContextInfo> _sources;
 
 
-        public PackageItem(string packageid, IList<string> packagesources)
+        public PackageItem(string packageid, ObservableCollection<PackageSourceContextInfo> packagesources)
         {
             _id = packageid;
             _sources = packagesources;
@@ -25,7 +26,7 @@ namespace NuGet.Options
             return _id;
         }
 
-        public IList<string> GetSources()
+        public ObservableCollection<PackageSourceContextInfo> GetSources()
         {
             return _sources;
         }

@@ -31,14 +31,7 @@
     </Grid.RowDefinitions>
 
     <ListBox Name="packageList" Grid.Row="0" >
-      <!--<DataTemplate>
-        <StackPanel>
-          <TextBlock ContentElement.="{Binding }"></TextBlock>
-          <ListBox>
-            
-          </ListBox>
-        </StackPanel>
-      </DataTemplate>-->
+      
     </ListBox>
 
 
@@ -177,19 +170,14 @@
                     <GridView>
                       <!-- checkbox column -->
                       <GridViewColumn>
-                        <GridViewColumn.Header>
-                          <GridViewColumnHeader>
-                            <CheckBox
-                  KeyboardNavigation.TabIndex="0"
-                  IsChecked="{Binding IsCheckedCommand}"/>
-                          </GridViewColumnHeader>
-                        </GridViewColumn.Header>
+                       
+                          
 
                         <GridViewColumn.CellTemplate>
                           <DataTemplate>
                             <CheckBox
                   IsTabStop="False"
-                  IsChecked="{Binding IsSelected}"/>
+                  IsChecked="{Binding Path=SetChecked, Mode=TwoWay}"/>
                           </DataTemplate>
                         </GridViewColumn.CellTemplate>
                       </GridViewColumn>

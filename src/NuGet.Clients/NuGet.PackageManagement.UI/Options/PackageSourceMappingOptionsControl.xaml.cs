@@ -36,7 +36,7 @@ using Task = System.Threading.Tasks.Task;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System.Runtime;
 using Resx = NuGet.PackageManagement.UI.Resources;
-
+//using NuGet.PackageManagement.UI.Options;
 
 namespace NuGet.Options
 {
@@ -46,7 +46,7 @@ namespace NuGet.Options
     public partial class PackageSourceMappingOptionsControl : UserControl
     {
 
-        public ItemsChangeObservableCollection<PackageSourceContextInfo> SourcesCollection { get; private set; } //change to package s
+        public ItemsChangeObservableCollection<PackageSourceItem> SourcesCollection { get; private set; } //change to package s
 
         private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
 
@@ -67,7 +67,11 @@ namespace NuGet.Options
 
         public ICommand ClearButtonCommand { get; set; }
 
-        private Dictionary<string, List<string>> _sourceMappings;
+        //public ICommand IsCheckedCommand { get; set; }
+
+        //public bool Checked { get; set; }
+
+        private Dictionary<string, ObservableCollection<PackageSourceContextInfo>> _sourceMappings;
 
         public PackageSourceMappingOptionsControl()
         {
@@ -81,18 +85,18 @@ namespace NuGet.Options
 
             ClearButtonCommand = new ClearButtonCommand(ExecuteClearButtonCommand, CanExecuteClearButtonCommand);
 
-
+            // IsCheckedCommand = new IsCheckedCommand(ExecuteIsCheckedCommand, CanExecuteIsCheckedCommand);
 
             // SourcesCollection = new ObservableCollection<object>();
             DataContext = this;
-            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextInfo>();
+            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
 
 
 
             InitializeComponent();
 
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
-            _sourceMappings = new Dictionary<string, List<string>>();
+            _sourceMappings = new Dictionary<string, ObservableCollection<PackageSourceContextInfo>>();
         }
 
         internal async Task InitializeOnActivatedAsync(CancellationToken cancellationToken)
@@ -112,12 +116,12 @@ namespace NuGet.Options
 
             _originalPackageSources = await _nugetSourcesService.GetPackageSourcesAsync(cancellationToken);
 
-            //SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextInfo>(_originalPackageSources);
             foreach (var source in _originalPackageSources)
             {
-                SourcesCollection.Add(source);
+                var tempSource = new PackageSourceItem(source, true);
+                SourcesCollection.Add(tempSource);
             }
-
+            //SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextItem>(_originalPackageSources);
             //SourcesCollection.Refresh();
 
             //add an event on sourcecollection --> collections changed
@@ -127,6 +131,16 @@ namespace NuGet.Options
             //_nugetSourcesService?.Dispose();
             //_nugetSourcesService = null;
         }
+
+        /*private void ExecuteIsCheckedCommand(object parameter)
+        {
+            
+        }
+
+        private bool CanExecuteIsCheckedCommand(object parameter)
+        {
+            return true;
+        }*/
 
 
 
@@ -164,14 +178,25 @@ namespace NuGet.Options
         {
             MyPopup.IsOpen = false;
             var tempPkgID = packageID.Text;
-            List<string> temp = sourcesListBox.SelectedItems as List<string>;
+            ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
+            foreach (PackageSourceItem source in sourcesListBox.Items)
+            {
+                if (source.IsChecked())
+                {
+                    tempSources.Add(source.GetSourceInfo());
+                    //MessageBox.Show(source.GetSourceInfo().ToString());
+                }
+            }
+
+
+            // List<string> temp = sourcesListBox.SelectedItem as List<string>;
             // temp = (List<string>)temp;
             //source mappings keeeps getting reset when okay button is clicked because it says new ... in the constructor
             //soln --> read directly from UI and not from a field in apply changed settings
-            _sourceMappings[tempPkgID] = temp;
-
-            // PackageItem tempPkg = new PackageItem(tempPkgID, temp);
-            packageList.Items.Add(tempPkgID);
+            _sourceMappings[tempPkgID] = tempSources;
+            PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
+            packageList.Items.Add(tempPkg);
+            //sourceList.Items.Add(temp);
             //ReadPackageItemToDictonary(packageList);
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
             (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
@@ -338,16 +363,16 @@ namespace NuGet.Options
         }
 
         //converts from dictonary created by UI to list of packageSourceMappingSourceItems
-        private IReadOnlyList<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(Dictionary<string, List<string>> UISourceMappings)
+        private List<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(Dictionary<string, ObservableCollection<PackageSourceContextInfo>> UISourceMappings)
         {
-            IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = null;
+            List<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = new List<PackageSourceMappingSourceItem>();
             foreach (var source in UISourceMappings.Keys)
             {
-                IEnumerable<PackagePatternItem> patterns = null;
+                List<PackagePatternItem> patterns = new List<PackagePatternItem>();
                 var packagePatterns = UISourceMappings[source];
                 foreach (var packagePattern in packagePatterns)
                 {
-                    PackagePatternItem patternItem = new PackagePatternItem(packagePattern);
+                    PackagePatternItem patternItem = new PackagePatternItem(packagePattern.ToString());
                     patterns.Append(patternItem);
                 }
                 PackageSourceMappingSourceItem mappingSourceItem = new PackageSourceMappingSourceItem(source, patterns);
@@ -355,6 +380,8 @@ namespace NuGet.Options
             }
             return packageSourceMappingsSourceItems;
         }
+
+
 
         /* private Dictionary<string, List<string>> ReadPackageItemToDictonary(List<PackageItem> packageItemList)
         {
@@ -366,6 +393,5 @@ namespace NuGet.Options
             _sourceMappings = list;
             return list;
         }*/
-
     }
 }

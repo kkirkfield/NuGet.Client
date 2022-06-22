@@ -87,7 +87,9 @@
     <Compile Include="Options\AddButtonCommand.cs" />
     <Compile Include="Options\ClearButtonCommand.cs" />
     <Compile Include="Options\HideButtonCommand.cs" />
+    <Compile Include="Options\IsCheckedCommand.cs" />
     <Compile Include="Options\PackageItem.cs" />
+    <Compile Include="Options\PackageSourceItem.cs" />
     <Compile Include="Options\PackageSourceMappingOptionsControl.xaml.cs">
       <DependentUpon>PackageSourceMappingOptionsControl.xaml</DependentUpon>
     </Compile>
