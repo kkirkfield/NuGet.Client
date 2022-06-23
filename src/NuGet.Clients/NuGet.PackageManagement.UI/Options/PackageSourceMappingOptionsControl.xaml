@@ -30,7 +30,7 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <ListBox Name="packageList" Grid.Row="0" >
+    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="0" >
       
     </ListBox>
 

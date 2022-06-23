@@ -48,6 +48,8 @@ namespace NuGet.Options
 
         public ItemsChangeObservableCollection<PackageSourceItem> SourcesCollection { get; private set; } //change to package s
 
+        public ItemsChangeObservableCollection<PackageItem> SourceMappingsCollection { get; private set; }
+
         private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
 
         private IReadOnlyList<PackageSourceMappingSourceItem> _originalPackageSourceMappings;
@@ -91,7 +93,7 @@ namespace NuGet.Options
             DataContext = this;
             SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
 
-
+            SourceMappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
 
             InitializeComponent();
 
@@ -113,7 +115,7 @@ namespace NuGet.Options
                     cancellationToken: cancellationToken);
 #pragma warning restore ISB001 // Dispose of proxies, disposed in disposing event or in ClearSettings
 
-
+            //show package sources on open
             _originalPackageSources = await _nugetSourcesService.GetPackageSourcesAsync(cancellationToken);
 
             foreach (var source in _originalPackageSources)
@@ -121,6 +123,27 @@ namespace NuGet.Options
                 var tempSource = new PackageSourceItem(source, true);
                 SourcesCollection.Add(tempSource);
             }
+
+            var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
+
+            //show package source mappings on open
+            var componentModelMapping = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
+            var settings = componentModelMapping.GetService<ISettings>();
+            PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
+            _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
+            ObservableCollection<PackageItem> SourceMappingsCollectiontemp = ReadMappingsFromConfigToUI(_originalPackageSourceMappings);
+            foreach (var item in SourceMappingsCollectiontemp)
+            {
+                SourceMappingsCollection.Add(item);
+            }
+
+            //var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
+
+            //var settings = componentModel.GetService<ISettings>();
+            //PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
+            // _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
+
+            //SourcesCollection.AddRange(_originalPackageSources);
             //SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextItem>(_originalPackageSources);
             //SourcesCollection.Refresh();
 
@@ -195,7 +218,8 @@ namespace NuGet.Options
             //soln --> read directly from UI and not from a field in apply changed settings
             _sourceMappings[tempPkgID] = tempSources;
             PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
-            packageList.Items.Add(tempPkg);
+            //packageList.Items.Add(tempPkg);
+            SourceMappingsCollection.Add(tempPkg);
             //sourceList.Items.Add(temp);
             //ReadPackageItemToDictonary(packageList);
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
@@ -211,18 +235,18 @@ namespace NuGet.Options
 
         private void ExecuteRemoveButtonCommand(object parameter)
         {
-            packageList.Items.Remove(packageList.SelectedItem);
+            SourceMappingsCollection.Remove((PackageItem)packageList.SelectedItem);
             (ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
         }
 
         private bool CanExecuteRemoveButtonCommand(object parameter)
         {
-            return MyPopup != null && packageList.Items.Count > 0;
+            return MyPopup != null && SourceMappingsCollection.Count > 0;
         }
 
         private void ExecuteClearButtonCommand(object parameter)
         {
-            packageList.Items.Clear();
+            SourceMappingsCollection.Clear();
             (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
         }
 
@@ -256,30 +280,10 @@ namespace NuGet.Options
             var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
             var settings = componentModel.GetService<ISettings>();
             PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
-            _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
+            // _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
 
             //add try/catch
-            //make packagesourcemappingsprovider object to call save...
-            //^^need to find settings
-            //
-
-            //makes packageSourceMappings into a list of type PackageSourceMappingsSourceItems
-            /*IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = null;
-            foreach (var source in packageSourceMappings.Patterns.Keys)
-            {
-                IEnumerable<PackagePatternItem> patterns = null;
-                var packagePatterns = packageSourceMappings.Patterns[source];
-                foreach (var packagePattern in packagePatterns)
-                {
-                    PackagePatternItem patternItem = new PackagePatternItem(packagePattern);
-                    patterns.Append(patternItem);
-                }
-                PackageSourceMappingSourceItem mappingSourceItem = new PackageSourceMappingSourceItem(source, patterns);
-                packageSourceMappingsSourceItems.Append(mappingSourceItem);
-            }*/
-
-            //Dictionary<string, List<string>> packageList = new Dictionary<string, List<string>>();
-            IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = ReadMappingsFromUIToConfig(_sourceMappings);
+            IReadOnlyList<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = ReadMappingsFromUIToConfig(SourceMappingsCollection);
 
 
 
@@ -336,6 +340,7 @@ namespace NuGet.Options
             }
 
             return false;
+            //why does it exit when it returns false??
         }
 
         //returns list of mappings from config
@@ -348,35 +353,45 @@ namespace NuGet.Options
         }
 
         //converts from list of packagesourcemappingsourceItems to a dictonary that can be read by UI
-        private Dictionary<string, List<string>> ReadMappingsFromConfigToUI(IReadOnlyList<PackageSourceMappingSourceItem> originalMappings)
+        private ItemsChangeObservableCollection<PackageItem> ReadMappingsFromConfigToUI(IReadOnlyList<PackageSourceMappingSourceItem> originalMappings)
         {
-            Dictionary<string, List<string>> UISourceMappings = new Dictionary<string, List<string>>();
+            Dictionary<string, ObservableCollection<PackageSourceContextInfo>> UISourceMappings = new Dictionary<string, ObservableCollection<PackageSourceContextInfo>>();
             foreach (PackageSourceMappingSourceItem sourceItem in originalMappings)
             {
                 foreach (PackagePatternItem patternItem in sourceItem.Patterns)
                 {
                     //do I need to check if list exists for that pattern yet?
-                    UISourceMappings[patternItem.Pattern].Append(sourceItem.Key);
+                    if (!UISourceMappings.ContainsKey(sourceItem.Key))
+                    {
+                        UISourceMappings[sourceItem.Key] = new ObservableCollection<PackageSourceContextInfo>();
+                    }
+                    UISourceMappings[sourceItem.Key].Add(new PackageSourceContextInfo(patternItem.Pattern));
                 }
             }
-            return UISourceMappings;
+            ItemsChangeObservableCollection<PackageItem> mappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
+            foreach (string packageID in UISourceMappings.Keys)
+            {
+                PackageItem temp = new PackageItem(packageID, UISourceMappings[packageID]);
+                mappingsCollection.Add(temp);
+            }
+
+            return mappingsCollection;
         }
 
         //converts from dictonary created by UI to list of packageSourceMappingSourceItems
-        private List<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(Dictionary<string, ObservableCollection<PackageSourceContextInfo>> UISourceMappings)
+        private ObservableCollection<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(ItemsChangeObservableCollection<PackageItem> UISourceMappings)
         {
-            List<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = new List<PackageSourceMappingSourceItem>();
-            foreach (var source in UISourceMappings.Keys)
+            ObservableCollection<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = new ObservableCollection<PackageSourceMappingSourceItem>();
+            foreach (var packageItem in UISourceMappings)
             {
-                List<PackagePatternItem> patterns = new List<PackagePatternItem>();
-                var packagePatterns = UISourceMappings[source];
-                foreach (var packagePattern in packagePatterns)
+                ObservableCollection<PackagePatternItem> sources = new ObservableCollection<PackagePatternItem>();
+                foreach (var source in packageItem.GetSources())
                 {
-                    PackagePatternItem patternItem = new PackagePatternItem(packagePattern.ToString());
-                    patterns.Append(patternItem);
+                    PackagePatternItem temp = new PackagePatternItem(source.Name);
+                    sources.Add(temp);
                 }
-                PackageSourceMappingSourceItem mappingSourceItem = new PackageSourceMappingSourceItem(source, patterns);
-                packageSourceMappingsSourceItems.Append(mappingSourceItem);
+                PackageSourceMappingSourceItem mappingSourceItem = new PackageSourceMappingSourceItem(packageItem.GetID(), sources);
+                packageSourceMappingsSourceItems.Add(mappingSourceItem);
             }
             return packageSourceMappingsSourceItems;
         }

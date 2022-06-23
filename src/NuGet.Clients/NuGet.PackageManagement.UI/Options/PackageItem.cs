@@ -10,7 +10,7 @@ using NuGet.VisualStudio.Internal.Contracts;
 
 namespace NuGet.Options
 {
-    internal class PackageItem
+    public class PackageItem
     {
         private string _id;
         private ObservableCollection<PackageSourceContextInfo> _sources;

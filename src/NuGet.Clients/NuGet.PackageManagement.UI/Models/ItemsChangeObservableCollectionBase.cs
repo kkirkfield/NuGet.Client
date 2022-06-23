@@ -26,5 +26,16 @@ namespace NuGet.PackageManagement.UI
         {
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
+
+        public void AddRange(IEnumerable<T> newItems)
+        {
+            foreach (var item in newItems)
+            {
+                Items.Add(item);
+            }
+
+            Refresh();
+        }
+
     }
 }
