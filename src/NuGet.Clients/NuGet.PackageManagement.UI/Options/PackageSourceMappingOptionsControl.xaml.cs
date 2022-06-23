@@ -120,7 +120,7 @@ namespace NuGet.Options
 
             foreach (var source in _originalPackageSources)
             {
-                var tempSource = new PackageSourceItem(source, true);
+                var tempSource = new PackageSourceItem(source, false);
                 SourcesCollection.Add(tempSource);
             }
 
@@ -204,9 +204,9 @@ namespace NuGet.Options
             ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
             foreach (PackageSourceItem source in sourcesListBox.Items)
             {
-                if (source.IsChecked())
+                if (source.IsChecked)
                 {
-                    tempSources.Add(source.GetSourceInfo());
+                    tempSources.Add(source.SourceInfo);
                     //MessageBox.Show(source.GetSourceInfo().ToString());
                 }
             }

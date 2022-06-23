@@ -177,7 +177,7 @@
                           <DataTemplate>
                             <CheckBox
                   IsTabStop="False"
-                  IsChecked="{Binding Path=SetChecked, Mode=TwoWay}"/>
+                  IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>
                           </DataTemplate>
                         </GridViewColumn.CellTemplate>
                       </GridViewColumn>
@@ -189,7 +189,7 @@
                           <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                               <TextBlock
-                                Text="{Binding}" />
+                                Text="{Binding SourceInfo.Name}" />
                             </StackPanel>
                           </DataTemplate>
                         </GridViewColumn.CellTemplate>

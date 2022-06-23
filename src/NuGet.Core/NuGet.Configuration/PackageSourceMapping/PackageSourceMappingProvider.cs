@@ -103,6 +103,7 @@ namespace NuGet.Configuration
                         removeMappings.Append(sourceItem);
                     }
                 }
+                //make if statement
                 Remove(removeMappings);
             }
         }

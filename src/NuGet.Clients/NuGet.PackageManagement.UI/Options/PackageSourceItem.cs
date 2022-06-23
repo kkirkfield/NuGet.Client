@@ -12,33 +12,14 @@ namespace NuGet.Options
 {
     public class PackageSourceItem
     {
-        private PackageSourceContextInfo _sourceInfo;
-        private bool _isChecked;
+        public PackageSourceContextInfo SourceInfo { get; private set; }
+        public bool IsChecked { get; set; }
+
 
         public PackageSourceItem(PackageSourceContextInfo sourceInfo, bool isChecked)
         {
-            _sourceInfo = sourceInfo;
-            _isChecked = isChecked;
-        }
-
-        public bool IsChecked()
-        {
-            return _isChecked;
-        }
-
-        public PackageSourceContextInfo GetSourceInfo()
-        {
-            return _sourceInfo;
-        }
-
-        public override string ToString()
-        {
-            return _sourceInfo.ToString();
-        }
-
-        public void SetCheck()
-        {
-            _isChecked = true;
+            SourceInfo = sourceInfo;
+            IsChecked = isChecked;
         }
     }
 }
