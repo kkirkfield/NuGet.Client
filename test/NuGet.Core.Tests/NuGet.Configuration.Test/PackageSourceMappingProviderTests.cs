@@ -47,6 +47,30 @@ namespace NuGet.Configuration.Test
         }
 
         [Fact]
+        public void GetPackageSourceMappingItems_WithOneConfig_WithDuplicateKeys_Throws()
+        {
+            // Arrange
+            using var mockBaseDirectory = TestDirectory.Create();
+            var configPath1 = Path.Combine(mockBaseDirectory, "NuGet.Config");
+            SettingsTestUtils.CreateConfigurationFile(configPath1, @"<?xml version=""1.0"" encoding=""utf-8""?>
+<configuration>
+    <packageSourceMapping>
+        <packageSource key=""nuget.org"">
+            <package pattern=""stuff"" />
+        </packageSource>
+        <packageSource key=""nuget.org"">
+            <package pattern=""stuff2"" />
+        </packageSource>
+    </packageSourceMapping>
+</configuration>");
+
+            // Act & Assert
+            var exception = Assert.Throws<NuGetConfigurationException>(
+                () => Settings.LoadSettingsGivenConfigPaths(new string[] { configPath1 }));
+            Assert.Equal("Package source 'nuget.org' has already been defined previously.", exception.Message);
+        }
+
+        [Fact]
         public void GetPackageSourceMappingItems_WithMultipleConfigs_ReturnsClosestPatterns()
         {
             // Arrange

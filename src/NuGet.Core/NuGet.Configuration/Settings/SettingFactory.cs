@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -99,8 +100,19 @@ namespace NuGet.Configuration
         internal static IEnumerable<T> ParseChildren<T>(XElement xElement, SettingsFile origin, bool canBeCleared) where T : SettingElement
         {
             var children = new List<T>();
-
-            var descendants = xElement.Elements().Select(d => Parse(d, origin)).OfType<T>().Distinct();
+            IEnumerable<T> descendants;
+            if (xElement.Name.LocalName.Equals("packageSourceMapping", StringComparison.OrdinalIgnoreCase))
+            {
+                descendants = xElement.Elements().Select(d => Parse(d, origin)).OfType<T>();
+                if (descendants.Count() > 1)
+                {
+                    throw new NuGetConfigurationException(string.Format(CultureInfo.CurrentCulture, Resources.Error_DuplicatePackageSource, descendants.First().Attributes["Key"]));
+                }
+            }
+            else
+            {
+                descendants = xElement.Elements().Select(d => Parse(d, origin)).OfType<T>().Distinct();
+            }
 
             foreach (var descendant in descendants)
             {
