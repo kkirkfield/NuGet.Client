@@ -132,11 +132,26 @@ namespace NuGet.Options
             PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
             _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
             ObservableCollection<PackageItem> SourceMappingsCollectiontemp = ReadMappingsFromConfigToUI(_originalPackageSourceMappings);
+            //Contains method did not work since diff instances of packageitem even though name is the same
+            //made own contains method
             foreach (var item in SourceMappingsCollectiontemp)
             {
-                SourceMappingsCollection.Add(item);
+                bool add = true;
+                foreach (PackageItem mapping in SourceMappingsCollection)
+                {
+                    if (mapping.GetID() == item.GetID())
+                    {
+                        add = false;
+                    }
+                }
+                if (add == true)
+                {
+                    SourceMappingsCollection.Add(item);
+                }
             }
 
+
+            //_nugetSourcesService.Dispose();
             //var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
 
             //var settings = componentModel.GetService<ISettings>();
