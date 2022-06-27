@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace NuGet.Configuration
@@ -94,17 +95,21 @@ namespace NuGet.Configuration
             //Remove all old mappings not in new mappings
             if (existingSettingsLookup != null)
             {
-                IReadOnlyList<PackageSourceMappingSourceItem> removeMappings = null;
+                ObservableCollection<PackageSourceMappingSourceItem> removeMappings = new ObservableCollection<PackageSourceMappingSourceItem>();
                 foreach (var sourceItem in existingSettingsLookup)
                 {
                     if (!packageSourceMappingsSourceItems.Contains(sourceItem))
                     {
                         //Remove(sourceItem);
-                        removeMappings.Append(sourceItem);
+                        removeMappings.Add(sourceItem);
                     }
                 }
                 //make if statement
-                Remove(removeMappings);
+                if (removeMappings != null && removeMappings.Count > 0)
+                {
+                    Remove(removeMappings);
+                }
+                //Remove(removeMappings);
             }
         }
     }
