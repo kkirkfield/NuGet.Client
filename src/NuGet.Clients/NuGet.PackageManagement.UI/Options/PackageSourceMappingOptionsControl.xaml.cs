@@ -90,11 +90,10 @@ namespace NuGet.Options
             // IsCheckedCommand = new IsCheckedCommand(ExecuteIsCheckedCommand, CanExecuteIsCheckedCommand);
 
             // SourcesCollection = new ObservableCollection<object>();
-            DataContext = this;
             SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
 
             SourceMappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
-
+            DataContext = this;
             InitializeComponent();
 
             (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();

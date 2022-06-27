@@ -31,7 +31,12 @@
     </Grid.RowDefinitions>
 
     <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="0" >
-      
+      <DataTemplate>
+        <StackPanel Orientation="Horizontal">
+          <Label Content="{Binding ID}"/>
+        </StackPanel>
+      </DataTemplate> 
+     
     </ListBox>
 
 
