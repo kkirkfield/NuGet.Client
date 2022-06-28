@@ -230,7 +230,7 @@ namespace NuGet.Options
             // temp = (List<string>)temp;
             //source mappings keeeps getting reset when okay button is clicked because it says new ... in the constructor
             //soln --> read directly from UI and not from a field in apply changed settings
-            _sourceMappings[tempPkgID] = tempSources;
+            //_sourceMappings[tempPkgID] = tempSources;
             PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
             //packageList.Items.Add(tempPkg);
             SourceMappingsCollection.Add(tempPkg);

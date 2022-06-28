@@ -8,34 +8,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-  <!--make new class that implements icommand-->
-
   <Grid Margin="12">
-
-    <Grid.Resources>
-      <XmlDataProvider x:Key="SourcesList" XPath="Sources">
-        <x:XData>
-          <Sources xmlns="">
-            <Source name="source0"/>
-            <Source name="source1"/>
-          </Sources>
-        </x:XData>
-      </XmlDataProvider>
-    </Grid.Resources>
-
-
-
+    
     <Grid.RowDefinitions>
-      <RowDefinition/>
-      <RowDefinition/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="48"/>
     </Grid.RowDefinitions>
 
-    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="0" >
-      <DataTemplate>
+    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="0" Margin="12,0,12,0" >
+      <!--<DataTemplate>
         <StackPanel Orientation="Horizontal">
           <Label Content="{Binding ID}"/>
         </StackPanel>
-      </DataTemplate> 
+      </DataTemplate> -->
      
     </ListBox>
 
@@ -44,17 +29,17 @@
     <Grid Grid.Row="1">
 
       <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="101"/>
+        <ColumnDefinition Width="89"/>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="124"/>
-        <ColumnDefinition Width="124"/>
-        <ColumnDefinition Width="124"/>
+        <ColumnDefinition Width="101"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="1" Width="100" Height="25" Command="{Binding ShowButtonCommand}">Add</Button>
+      <Button Grid.Column="0" Width="86" Height="24" Margin = "12,0,0,12" Command="{Binding ShowButtonCommand}">Add</Button>
 
-      <Button Grid.Column="2" Width="100" Height="25" Command="{Binding RemoveButtonCommand}">Remove</Button>
+      <Button Grid.Column="1" Width="86" Height="24" Margin = "3,0,0,12" Command="{Binding RemoveButtonCommand}">Remove</Button>
 
-      <Button  Grid.Column="3" Width="100" Height="25" Command="{Binding ClearButtonCommand}">Clear</Button>
+      <Button  Grid.Column="3" Width="86" Height="24" Margin = "0,0,12,12" Command="{Binding ClearButtonCommand}">Clear</Button>
 
 
     </Grid>
@@ -71,151 +56,101 @@
                VerticalAlignment="Center"
                AllowsTransparency="True"
                >
-      
-        <Grid  Height="168" Width="456" Background="White">
 
-          <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-          </Grid.ColumnDefinitions>
+      <Grid  Height="304" Width="456" Background="White">
 
-          <StackPanel Grid.Row="0">
-            <Grid Name="TitleGrid"  >
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="*" ></ColumnDefinition>
-                <ColumnDefinition Width="50" ></ColumnDefinition>
-              </Grid.ColumnDefinitions>
-              <TextBlock x:Uid="TitleTextBlock"
+        <Grid.RowDefinitions>
+          <RowDefinition Height="30"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="36"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+          <Grid Name="TitleGrid"  >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition  Width="*" ></ColumnDefinition>
+              <ColumnDefinition Width="50" ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Uid="TitleTextBlock"
                            Grid.Column="0"
-                           Text="Add New Azure Cloud"
-                           Margin="12,5,0,0"/>
+                           Text="Add New Package Namespace"
+                           Margin="12,12,0,0"/>
 
 
-            </Grid>
+          </Grid>
 
 
-          </StackPanel>
+        </StackPanel>
 
-          <StackPanel Grid.Row="1">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="12" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition  Width="12" />
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition  Height="35"/>
-                <RowDefinition  Height="*"/>
-                <RowDefinition Height="35"/>
-              </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition  Height="36"/>
+              <RowDefinition  Height="*"/>
+              <RowDefinition Height="36"/>
+            </Grid.RowDefinitions>
 
-              <TextBox Grid.Row="0" Grid.Column="1" Name="packageID"  >
-                Add valid namespace
-              </TextBox>
+            <TextBox Grid.Row="0" Name="packageID"  Margin="12,0,12,6">
+              Add valid namespace
+            </TextBox>
 
 
-              <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
-                <Label Name ="Label"
-                           Margin="0,12,0,5"
-                           Padding="0"
-                            Background="MistyRose" />
-                <Grid >
-                  <!-- <ComboBox Name ="sources" Margin="0,0,0,9"> -->
-                  <!--  <ScrollViewer VerticalScrollBarVisibility="Auto" Height="60" Visibility="Visible">
-                  <ListBox Margin="0,0,0,9" SelectionMode="Multiple" Name="sourcesListBox" ItemsSource="{Binding XPath=@Names}" >
-                    <ListBoxItem>Nuget</ListBoxItem>
-                    <ListBoxItem>Microsoft</ListBoxItem>
-                    <ListBoxItem>contoso</ListBoxItem>
-                    <ListBoxItem>new namespace</ListBoxItem>
-                    <ListBoxItem>h</ListBoxItem>
-                    <ListBoxItem>f</ListBoxItem>
-                  </ListBox>
-                </ScrollViewer> -->
+            <StackPanel Orientation="Vertical"  Grid.Row="1">
 
-                  <!--         <ComboBox.ItemTemplate >
-                                        <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox x:Name="chkBox" Width="20"/>
-                                                     <Label x:Name ="sourceLabel" Width="100" Background="SandyBrown" Command="{Binding IsCheckedCommand}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                      </ComboBox.ItemTemplate> /> -->
-                  <!--    </ComboBox> -->
-                <ListView Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Height="60">
-                  <!--<ListView.Style>
-                    <Style TargetType="{x:Type ListView}">
-                      <Setter Property="Template">
-                        <Setter.Value>
-                          <ControlTemplate TargetType="{x:Type ListView}">
+              <ListView Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Margin="12,0,12,12" Height="190">
 
-                            <ScrollViewer >
 
-                            </ScrollViewer>
-                            <ControlTemplate.Triggers>
-                              <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                  <Condition Property="IsGrouping" Value="true"/>
-                                  <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                              </MultiTrigger>
-                            </ControlTemplate.Triggers>
-                          </ControlTemplate>
-                        </Setter.Value>
-                      </Setter>
-                    </Style>
-                  </ListView.Style>-->
+                <ListView.View>
+                  <GridView>
+                    <!-- checkbox column -->
+                    <GridViewColumn>
 
-                  <ListView.View>
-                    <GridView>
-                      <!-- checkbox column -->
-                      <GridViewColumn>
-                       
-                          
 
-                        <GridViewColumn.CellTemplate>
-                          <DataTemplate>
-                            <CheckBox
+
+                      <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                          <CheckBox
                   IsTabStop="False"
                   IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>
-                          </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                      </GridViewColumn>
+                        </DataTemplate>
+                      </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
-                      <!-- the project column -->
-                      <GridViewColumn x:Name="_projectColumn">
-                        <GridViewColumnHeader/>
-                        <GridViewColumn.CellTemplate>
-                          <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                              <TextBlock
+                    <!-- the project column -->
+                    <GridViewColumn x:Name="_projectColumn">
+                      <GridViewColumnHeader/>
+                      <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                          <StackPanel Orientation="Horizontal">
+                            <TextBlock
                                 Text="{Binding SourceInfo.Name}" />
-                            </StackPanel>
-                          </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                      </GridViewColumn>
-                    </GridView>
-                  </ListView.View>
-                </ListView>
-              </Grid>
-              </StackPanel>
-
-             
-
-            </Grid>
-          </StackPanel>
-
-        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
-          <Button Name="AddCloud" Height="23" Width="75" Content="_Add"  Command="{Binding AddButtonCommand}" />
-          <Button Name="CancelClose" Height="23" Width="75"  Command ="{Binding HideButtonCommand}">
-            Close
-          </Button>
+                          </StackPanel>
+                        </DataTemplate>
+                      </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                  </GridView>
+                </ListView.View>
+              </ListView>
+            </StackPanel>
+          </Grid>
         </StackPanel>
+
+
+
+        <Grid Grid.Row="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="190"/>
+          </Grid.ColumnDefinitions>
+          <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right"  Grid.Column="1">
+            <Button Name="AddCloud" Height="24" Width="86" Content="_Add"  Command="{Binding AddButtonCommand}" Margin="0,0,3,12"/>
+            <Button Name="CancelClose" Height="24" Width="86"  Command ="{Binding HideButtonCommand}" Margin="3,0,12,12">
+              Close
+            </Button>
+          </StackPanel>
+        </Grid>
+        
+     
           
       </Grid>
     </Popup>
