@@ -19,7 +19,7 @@ namespace NuGet.Options
 
         public PackageItem(string packageid, ObservableCollection<PackageSourceContextInfo> package_sources)
         {
-           _id = packageid;
+            _id = packageid;
             _sources = package_sources;
         }
         public string GetID()
