@@ -140,6 +140,9 @@ namespace NuGet.Options
             {
                 SourceMappingsCollection.Add(item);
             }
+            //make sure all buttons show on open if there are already sourcemappings
+            (ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
+            (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
         }
         private void ExecuteShowButtonCommand(object parameter)
         {
