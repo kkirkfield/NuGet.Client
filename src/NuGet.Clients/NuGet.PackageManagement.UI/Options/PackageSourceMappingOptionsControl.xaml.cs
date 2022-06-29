@@ -133,7 +133,6 @@ namespace NuGet.Options
             PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
             _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
             ObservableCollection<PackageItem> SourceMappingsCollectiontemp = ReadMappingsFromConfigToUI(_originalPackageSourceMappings);
-            
             //clear sourcemappings so that they don't repeat
             SourceMappingsCollection.Clear();
             foreach (var item in SourceMappingsCollectiontemp)
@@ -175,6 +174,7 @@ namespace NuGet.Options
 
         private void ExecuteAddButtonCommand(object parameter)
         {
+            //MessageBox.Show(packageID.Text.Length.ToString());
             MyPopup.IsOpen = false;
             var tempPkgID = packageID.Text;
             ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
@@ -194,8 +194,19 @@ namespace NuGet.Options
 
         private bool CanExecuteAddButtonCommand(object parameter)
         {
-            var tempPkg = packageID.Text;
-            return !string.IsNullOrWhiteSpace(tempPkg);
+            /*var tempPkg = packageID.Text;
+            ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
+            foreach (PackageSourceItem source in sourcesListBox.Items)
+            {
+                if (source.IsChecked)
+                {
+                    tempSources.Add(source.SourceInfo);
+                }
+            }
+            //return true;
+            return !string.IsNullOrWhiteSpace(tempPkg) && tempSources.Count > 0;*/
+            //MessageBox.Show(packageID.Text.Length.ToString());
+            return true;
         }
 
         private void ExecuteRemoveButtonCommand(object parameter)
