@@ -5,8 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NuGet.Options"
              xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+        
+             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+             Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+  <UserControl.Resources>
+    <ResourceDictionary x:Uid="ResourceDictionary_2">
+      <BooleanToVisibilityConverter x:Uid="BooleanToVisibilityConverter_1" x:Key="BoolToVisConverter"/>
+      <Style x:Uid="MainGroupBoxStyle" x:Key="MainGroupBoxStyle" TargetType="{x:Type GroupBox}">
+        <Setter x:Uid="Setter_1" Property="Padding" Value="4,3,4,2" />
+        <Setter x:Uid="Setter_2" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+      </Style>
+      <Style x:Uid="DetailedButtonStyle" x:Key="DetailButtonStyle" TargetType="{x:Type Button}">
+        <Setter x:Uid="Setter_3" Property="MinWidth" Value="75" />
+        <Setter x:Uid="Setter_4" Property="MinHeight" Value="23" />
+        <Setter x:Uid="Setter_5" Property="Padding" Value="10,1,10,1" />
+        <Setter x:Uid="Setter_6" Property="VerticalContentAlignment" Value="Center" />
+        <Setter x:Uid="Setter_61" Property="HorizontalContentAlignment" Value="Center" />
+        <Setter x:Uid="Setter_7" Property="Margin" Value="3,6" />
+        <Setter x:Uid="Setter_8" Property="ToolTipService.ShowOnDisabled" Value="True" />
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
 
   <Grid Margin="12">
     
@@ -16,14 +38,56 @@
       <RowDefinition Height="36"/>
     </Grid.RowDefinitions>
 
+
+    <Grid.Resources>
+      <!-- Data Template for list items -->
+      <DataTemplate x:Uid="ProfileItemTemplate" x:Key="ProfileItemTemplate">
+        <StackPanel x:Uid="ListItemStackPanel">
+          <TextBlock x:Uid="DisplayNameTextBlock" FontWeight="Bold">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock">
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <TextBlock x:Uid="LocationTextBlock">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}{0}
+                            {1}">
+                <Binding Path="ID"/>
+                <Binding Path="Sources"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </StackPanel>
+      </DataTemplate>
+    </Grid.Resources>
+
     <TextBlock  Grid.Row="0" Margin="6,0,0,0">Package Source Mappings:</TextBlock>
-    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="1" Margin="6,6,6,6" >
+    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="1" Margin="6,6,6,6"
+              ItemTemplate="{StaticResource ProfileItemTemplate}"
+                        
+                         IsSynchronizedWithCurrentItem="True"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         AutomationProperties.Name="Profiles">
       <!--<DataTemplate>
         <StackPanel Orientation="Horizontal">
           <Label Content="{Binding ID}"/>
         </StackPanel>
       </DataTemplate> -->
-     
+      <ListBox.ItemContainerStyle>
+        <Style x:Uid="Style_2">
+          
+          <Setter x:Uid="Setter_10" Property="AutomationProperties.HelpText">
+            <Setter.Value>
+              <MultiBinding StringFormat="{}{0} {1}">
+                <Binding Path="Location"/>
+                <Binding Path="Arguments"/>
+              </MultiBinding>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListBox.ItemContainerStyle>
+
     </ListBox>
 
 

@@ -12,36 +12,38 @@ namespace NuGet.Options
 {
     public class PackageItem
     {
-        //public string ID { get; set; }
-        //public ObservableCollection<PackageSourceContextInfo> _sources { get; private set; }
-        private string _id;
-        private ObservableCollection<PackageSourceContextInfo> _sources;
+        public string ID { get; set; }
+        public ObservableCollection<PackageSourceContextInfo> Sources { get; private set; }
+        /// <summary>
+        /// /private string ID;
+        /// </summary>
+        //private ObservableCollection<PackageSourceContextInfo> Sources;
 
-        public PackageItem(string packageid, ObservableCollection<PackageSourceContextInfo> package_sources)
+        public PackageItem(string packageid, ObservableCollection<PackageSourceContextInfo> packageSources)
         {
-            _id = packageid;
-            _sources = package_sources;
+            ID = packageid;
+            Sources = packageSources;
         }
         public string GetID()
         {
-            return _id;
+            return ID;
         }
 
         public ObservableCollection<PackageSourceContextInfo> GetSources()
         {
-            return _sources;
+            return Sources;
         }
 
         public override string ToString()
         {
             var tempString = "";
             tempString += "Package ID: ";
-            tempString += _id;
-            tempString += "_sources: ";
-            for (int i = 0; i < _sources.Count; i++)
+            tempString += ID;
+            tempString += "Sources: ";
+            for (int i = 0; i < Sources.Count; i++)
             {
-                tempString += _sources[i].ToString();
-                if (i < _sources.Count - 1)
+                tempString += Sources[i].ToString();
+                if (i < Sources.Count - 1)
                 {
                     tempString += ", ";
                 }
