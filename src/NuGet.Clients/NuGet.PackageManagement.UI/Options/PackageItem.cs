@@ -14,6 +14,23 @@ namespace NuGet.Options
     {
         public string ID { get; set; }
         public ObservableCollection<PackageSourceContextInfo> Sources { get; private set; }
+
+        public string SourcesString
+        {
+            get
+            {
+                string sourcesString = "";
+                for (int i = 0; i < Sources.Count; i++)
+                {
+                    sourcesString += Sources[i].Name;
+                    if (i < Sources.Count - 1)
+                    {
+                        sourcesString += ", ";
+                    }
+                }
+                return sourcesString;
+            }
+        }
         /// <summary>
         /// /private string ID;
         /// </summary>

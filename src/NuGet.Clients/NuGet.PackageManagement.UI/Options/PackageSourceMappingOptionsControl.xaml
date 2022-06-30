@@ -43,19 +43,14 @@
       <!-- Data Template for list items -->
       <DataTemplate x:Uid="ProfileItemTemplate" x:Key="ProfileItemTemplate">
         <StackPanel x:Uid="ListItemStackPanel">
-          <TextBlock x:Uid="DisplayNameTextBlock" FontWeight="Bold">
-            <TextBlock.Style>
-              <Style TargetType="TextBlock">
-              </Style>
-            </TextBlock.Style>
-          </TextBlock>
-          <TextBlock x:Uid="LocationTextBlock">
+          <TextBlock FontWeight="Bold">
             <TextBlock.Text>
-              <MultiBinding StringFormat="{}{0}
-                            {1}">
-                <Binding Path="ID"/>
-                <Binding Path="Sources"/>
-              </MultiBinding>
+              <Binding Path="ID"/>
+            </TextBlock.Text>
+          </TextBlock>
+          <TextBlock>
+            <TextBlock.Text>
+              <Binding Path="SourcesString"/>
             </TextBlock.Text>
           </TextBlock>
         </StackPanel>
