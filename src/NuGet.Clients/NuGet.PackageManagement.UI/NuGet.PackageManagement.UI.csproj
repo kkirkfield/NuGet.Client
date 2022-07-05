@@ -32,11 +32,13 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,6 +87,9 @@
     <Compile Include="Models\LicenseFileText.cs" />
     <Compile Include="Models\PackageItemDeprecationLabelState.cs" />
     <Compile Include="Options\AddButtonCommand.cs" />
+    <Compile Include="Options\AddMappingDialog.xaml.cs">
+      <DependentUpon>AddMappingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Options\ClearButtonCommand.cs" />
     <Compile Include="Options\HideButtonCommand.cs" />
     <Compile Include="Options\IsCheckedCommand.cs" />
@@ -317,6 +322,10 @@
     <DesignDataWithDesignTimeCreatableTypes Include="Design\PackageItemListViewSampleData.xaml">
       <SubType>Designer</SubType>
     </DesignDataWithDesignTimeCreatableTypes>
+    <Page Include="Options\AddMappingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Options\PackageSourceMappingOptionsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

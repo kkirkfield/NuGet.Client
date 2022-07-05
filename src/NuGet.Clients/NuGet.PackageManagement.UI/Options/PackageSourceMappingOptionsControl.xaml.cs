@@ -4,38 +4,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.VisualStudio;
-
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-
-using System.Threading.Tasks;
-
-using Microsoft;
 using Microsoft.ServiceHub.Framework;
 
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.Configuration;
 using NuGet.PackageManagement.UI;
-using NuGet.PackageManagement.VisualStudio;
 using NuGet.VisualStudio;
 using NuGet.VisualStudio.Common;
 using NuGet.VisualStudio.Internal.Contracts;
-using NuGet.VisualStudio.Telemetry;
-using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
-using Microsoft.TeamFoundation.VersionControl.Client;
-using System.Runtime;
 using Resx = NuGet.PackageManagement.UI.Resources;
+//using AddMapping = NuGet.PackageManagement.UI.AddMappingDialog;
 //using NuGet.PackageManagement.UI.Options;
 
 namespace NuGet.Options
@@ -68,6 +50,9 @@ namespace NuGet.Options
         public ICommand RemoveButtonCommand { get; set; }
 
         public ICommand ClearButtonCommand { get; set; }
+
+        private AddMappingDialog _addMappingDialog;
+
 
         //public ICommand IsCheckedCommand { get; set; }
 
@@ -145,7 +130,9 @@ namespace NuGet.Options
         }
         private void ExecuteShowButtonCommand(object parameter)
         {
-            MyPopup.IsOpen = true;
+            //MyPopup.IsOpen = true;
+            _addMappingDialog = new AddMappingDialog();
+            //addMappingDialog.Show();
         }
 
         private bool CanExecuteShowButtonCommand(object parameter)
@@ -175,10 +162,10 @@ namespace NuGet.Options
         private void ExecuteAddButtonCommand(object parameter)
         {
             //MessageBox.Show(packageID.Text.Length.ToString());
-            MyPopup.IsOpen = false;
-            var tempPkgID = packageID.Text;
+            //MyPopup.IsOpen = false;
+            var tempPkgID = _addMappingDialog.packageID.Text;
             ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
-            foreach (PackageSourceItem source in sourcesListBox.Items)
+            foreach (PackageSourceItem source in _addMappingDialog.sourcesListBox.Items)
             {
                 if (source.IsChecked)
                 {
@@ -204,8 +191,8 @@ namespace NuGet.Options
                 }
             }
             //return true;
-            return !string.IsNullOrWhiteSpace(tempPkg) && tempSources.Count > 0;*/
-            //MessageBox.Show(packageID.Text.Length.ToString());
+            return !string.IsNullOrWhiteSpace(tempPkg) && tempSources.Count > 0;
+            //MessageBox.Show(packageID.Text.Length.ToString());*/
             return true;
         }
 

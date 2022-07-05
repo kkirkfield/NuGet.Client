@@ -118,7 +118,7 @@
                AllowsTransparency="True"
                >
 
-      <Grid  Height="304" Width="456" Background="White">
+      <!--<Grid  Height="304" Width="456" Background="White">
 
         <Grid.RowDefinitions>
           <RowDefinition Height="30"/>
@@ -160,7 +160,7 @@
 
                 <ListView.View>
                   <GridView>
-                    <!-- checkbox column -->
+                    checkbox column 
                     <GridViewColumn Width="Auto">
 
                      
@@ -176,7 +176,7 @@
                       </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <!-- the project column -->
+                     the project column 
                     <GridViewColumn x:Name="_projectColumn" Width="402">
                       <GridViewColumnHeader Content="  Source" HorizontalContentAlignment="Left"/>
                       <GridViewColumn.CellTemplate>
@@ -212,7 +212,7 @@
         
      
           
-      </Grid>
+      </Grid>-->
     </Popup>
   </Grid>
 </UserControl>
