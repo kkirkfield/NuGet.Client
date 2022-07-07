@@ -1,37 +1,117 @@
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
+using Microsoft.Build.Utilities;
+using Microsoft.ServiceHub.Framework;
+using NuGet.PackageManagement.UI;
+using NuGet.PackageManagement.VisualStudio;
+using NuGet.VisualStudio.Common;
+using NuGet.VisualStudio;
+using NuGet.VisualStudio.Internal.Contracts;
+using NuGet.Configuration;
+using System.Collections.Generic;
+using Task = System.Threading.Tasks.Task;
+using Resx = NuGet.PackageManagement.UI.Resources;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.Internal.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.PlatformUI;
+
+using Microsoft.VisualStudio.Shell;
+
 
 namespace NuGet.Options
 {
-    /// <summary>
-    /// Interaction logic for AddMappingDialog.xaml
-    /// </summary>
-    public partial class AddMappingDialog : UserControl
+    public partial class AddMappingDialog : Window
     {
-        public AddMappingDialog()
+        public ICommand HideButtonCommand { get; set; }
+
+        public ICommand AddButtonCommand { get; set; }
+
+        public ItemsChangeObservableCollection<PackageSourceItem> SourcesCollection { get; private set; } //change to package s
+
+        private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
+
+#pragma warning disable ISB001 // Dispose of proxies, disposed in disposing event or in ClearSettings
+        private INuGetSourcesService _nugetSourcesService;
+#pragma warning restore ISB001 // Dispose of proxies, disposed in disposing event or in ClearSettings
+
+        private PackageSourceMappingOptionsControl _parent;
+
+        public AddMappingDialog(PackageSourceMappingOptionsControl parent)
         {
+            _parent = parent;
+            HideButtonCommand = new HideButtonCommand(ExecuteHideButtonCommand, CanExecuteHideButtonCommand);
+            AddButtonCommand = new AddButtonCommand(ExecuteAddButtonCommand, CanExecuteAddButtonCommand);
+            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
+            DataContext = this;
             InitializeComponent();
+            CancellationToken cancellationToken = new CancellationToken(false);
+            NuGetUIThreadHelper.JoinableTaskFactory.Run(async () => await InitializeOnActivatedAsync(cancellationToken));
+        }
+
+        internal async Task InitializeOnActivatedAsync(CancellationToken cancellationToken)
+        {
+            IServiceBrokerProvider serviceBrokerProvider = await ServiceLocator.GetComponentModelServiceAsync<IServiceBrokerProvider>();
+            IServiceBroker serviceBroker = await serviceBrokerProvider.GetAsync();
+#pragma warning disable ISB001 // Dispose of proxies, disposed in disposing event or in ClearSettings
+            _nugetSourcesService = await serviceBroker.GetProxyAsync<INuGetSourcesService>(
+                    NuGetServices.SourceProviderService,
+                    cancellationToken: cancellationToken);
+#pragma warning restore ISB001 // Dispose of proxies, disposed in disposing event or in ClearSettings
+
+            //show package sources on open
+            _originalPackageSources = await _nugetSourcesService.GetPackageSourcesAsync(cancellationToken);
+            SourcesCollection.Clear();
+            foreach (var source in _originalPackageSources)
+            {
+                var tempSource = new PackageSourceItem(source, false);
+                SourcesCollection.Add(tempSource);
+            }
+            var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
+        }
+
+        private void ExecuteHideButtonCommand(object parameter)
+        {
+            Close();
+            (_parent.ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
+        }
+
+        private bool CanExecuteHideButtonCommand(object parameter)
+        {
+            return true;
+        }
+
+        private void ExecuteAddButtonCommand(object parameter)
+        {
+            Close();
+            var tempPkgID = packageID.Text;
+            ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
+            foreach (PackageSourceItem source in sourcesListBox.Items)
+            {
+                if (source.IsChecked)
+                {
+                    tempSources.Add(source.SourceInfo);
+                }
+            }
+            PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
+            _parent.SourceMappingsCollection.Add(tempPkg);
+            (_parent.ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
+            (_parent.RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
+            (_parent.ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
+        }
+
+        private bool CanExecuteAddButtonCommand(object parameter)
+        {
+            return true;
         }
 
         // Allows the user to drag the window around
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            //this.DragMove();
+            DragMove();
         }
-
     }
 }
