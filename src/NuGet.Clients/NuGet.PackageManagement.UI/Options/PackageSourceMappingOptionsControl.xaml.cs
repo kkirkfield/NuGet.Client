@@ -119,7 +119,7 @@ namespace NuGet.Options
             {
                 if (SourceMappingsChanged(_originalPackageSourceMappings, packageSourceMappingsSourceItems))
                 {
-                    packageSourceMappingProvider.SavePackageSourceMappings(packageSourceMappingsSourceItems); 
+                    packageSourceMappingProvider.SavePackageSourceMappings(packageSourceMappingsSourceItems);
                 }
             }
             // Thrown during creating or saving NuGet.Config.
