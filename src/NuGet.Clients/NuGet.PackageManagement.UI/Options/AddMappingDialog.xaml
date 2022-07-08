@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:nuget="clr-namespace:NuGet.PackageManagement.UI"
              mc:Ignorable="d" 
              x:Uid="AddMappingDialogWindow"
              x:Name="AddMappingDialogWindow"
@@ -54,7 +55,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Name="TitleTextBlock"
                            Grid.Column="0"
-                           Text="Add New Package Namespace"
+                           Text="{x:Static nuget:Resources.VSOptions_Label_AddPackageNamespace}"
                            Margin="12,12,0,0"/>
       </Grid>
     </StackPanel>
@@ -67,7 +68,7 @@
           <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
 
-        <vsui:WatermarkedTextBox Grid.Row="0" Name="packageID"  Margin="12,6,12,6" Watermark="Add valid package ID" Background="White" Foreground="Black" />
+        <vsui:WatermarkedTextBox Grid.Row="0" Name="packageID"  Margin="12,6,12,6" Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}" Background="White" Foreground="Black" />
 
         <StackPanel Orientation="Vertical"  Grid.Row="1">
 
@@ -87,7 +88,7 @@
 
                 <!-- the project column -->
                 <GridViewColumn x:Name="_projectColumn" Width="402">
-                  <GridViewColumnHeader Content="  Source" HorizontalContentAlignment="Left"/>
+                  <GridViewColumnHeader Content="{x:Static nuget:Resources.VSOptions_Label_Source}" HorizontalContentAlignment="Left"/>
                   <GridViewColumn.CellTemplate>
                     <DataTemplate>
                       <StackPanel Orientation="Horizontal">
@@ -110,10 +111,8 @@
         <ColumnDefinition Width="190"/>
       </Grid.ColumnDefinitions>
       <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right"  Grid.Column="1">
-        <Button Name="AddCloud" Height="24" Width="86" Content="_Add"  Command="{Binding AddButtonCommand}" Margin="0,0,3,12"/>
-        <Button Name="CancelClose" Height="24" Width="86"  Command ="{Binding HideButtonCommand}" Margin="3,0,12,12">
-          Close
-        </Button>
+        <Button Name="AddCloud" Height="24" Width="86" Command="{Binding AddButtonCommand}" Margin="0,0,3,12" Content="{x:Static nuget:Resources.VSOptions_Button_Add}"/>
+        <Button Name="CancelClose" Height="24" Width="86"  Command ="{Binding HideButtonCommand}" Margin="3,0,12,12" Content="{x:Static nuget:Resources.VSOptions_Button_Cancel}"/>
       </StackPanel>
     </Grid>
 

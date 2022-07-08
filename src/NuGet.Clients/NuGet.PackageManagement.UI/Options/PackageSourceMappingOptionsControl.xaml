@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:nuget="clr-namespace:Resx;assembly=NuGet.PackageManagement.UI"
+             xmlns:nuget="clr-namespace:NuGet.PackageManagement.UI"
              xmlns:local="clr-namespace:NuGet.Options"
              xmlns:vsui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
@@ -58,8 +58,8 @@
             </DataTemplate>
         </Grid.Resources>
 
-      <TextBlock  Grid.Row="0" Margin="6,0,0,0">Package Source Mappings:</TextBlock>
-      <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="1" Margin="6,6,6,6"
+    <TextBlock  Grid.Row="0" Margin="6,0,0,0" Text="{x:Static nuget:Resources.VSOptions_Label_PackageSourceMappings}"/>
+    <ListBox Name="packageList" ItemsSource="{Binding SourceMappingsCollection}" Grid.Row="1" Margin="6,6,6,6"
               ItemTemplate="{StaticResource ProfileItemTemplate}"
                          IsSynchronizedWithCurrentItem="True"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -86,11 +86,11 @@
         <ColumnDefinition Width="101"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Width="86" Height="24"  Command="{Binding ShowButtonCommand}">Add</Button>
+      <Button Grid.Column="0" Width="86" Height="24"  Command="{Binding ShowButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Add}"/>
 
-      <Button Grid.Column="1" Width="86" Height="24" Margin = "3,0,0,0" Command="{Binding RemoveButtonCommand}">Remove</Button>
-      <!--Content="{x:Static nuget:PackageSourceMappingOptionsControl.Button_Clear}"-->
-      <Button  Grid.Column="3" Width="86" Height="24"  Command="{Binding ClearButtonCommand}" Content="{x:Static nuget:Resources.Button_Clear}"/>
+      <Button Grid.Column="1" Width="86" Height="24" Margin = "3,0,0,0" Command="{Binding RemoveButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Remove}"/>
+
+      <Button  Grid.Column="3" Width="86" Height="24"  Command="{Binding ClearButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Clear}"/>
     </Grid>
   </Grid>
 </UserControl>
