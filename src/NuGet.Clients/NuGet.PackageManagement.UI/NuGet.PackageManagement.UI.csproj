@@ -95,6 +95,11 @@
     <Compile Include="Options\IsCheckedCommand.cs" />
     <Compile Include="Options\PackageItem.cs" />
     <Compile Include="Options\PackageSourceItem.cs" />
+    <Compile Include="Options\PackageSourceMappingOptionsControl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackageSourceMappingOptionsControl.resx</DependentUpon>
+    </Compile>
     <Compile Include="Options\PackageSourceMappingOptionsControl.xaml.cs">
       <DependentUpon>PackageSourceMappingOptionsControl.xaml</DependentUpon>
     </Compile>
@@ -469,6 +474,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Options\GeneralOptionControl.resx">
       <DependentUpon>GeneralOptionControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Options\PackageSourceMappingOptionsControl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PackageSourceMappingOptionsControl.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Options\PackageSourcesOptionsControl.resx">
       <DependentUpon>PackageSourcesOptionsControl.cs</DependentUpon>
