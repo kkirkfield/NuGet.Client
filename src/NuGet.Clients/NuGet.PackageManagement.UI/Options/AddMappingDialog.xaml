@@ -16,29 +16,6 @@
              WindowStartupLocation="CenterOwner"
              BorderBrush="{DynamicResource {x:Static vsui:EnvironmentColors.PanelBorderBrushKey}}"
              BorderThickness="1">
-  <Window.Resources>
-    <ResourceDictionary x:Uid="root" x:Name="root">
-      <Style x:Uid="s1" TargetType="{x:Type Button}" >
-        <Setter x:Uid="buttons1" Property="Width" Value="75" />
-        <Setter x:Uid="buttons2" Property="Height" Value="23" />
-      </Style>
-
-      <!-- General purpose FocusVisualStyle which uses a stroke which changes based on theme. -->
-      <Style x:Uid="ThemedFocusVisualStyle" x:Key="ThemedFocusVisualStyle">
-        <Setter x:Uid="Setter0" Property="Control.Template">
-          <Setter.Value>
-            <ControlTemplate x:Uid="ControlTemplate1" >
-              <Rectangle x:Uid="Rectangle_1" StrokeThickness="1"
-                               Stroke="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                               StrokeDashArray="1 2" 
-                               SnapsToDevicePixels="True" />
-            </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      </Style>
-    </ResourceDictionary>
-  </Window.Resources>
-  
   <Grid>
 
     <Grid.RowDefinitions>
