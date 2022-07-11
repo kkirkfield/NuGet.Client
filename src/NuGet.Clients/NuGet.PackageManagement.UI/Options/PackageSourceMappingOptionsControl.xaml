@@ -11,27 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-    <ResourceDictionary x:Uid="ResourceDictionary_2">
-      
-      <BooleanToVisibilityConverter x:Uid="BooleanToVisibilityConverter_1" x:Key="BoolToVisConverter"/>
-            <Style x:Uid="MainGroupBoxStyle" x:Key="MainGroupBoxStyle" TargetType="{x:Type GroupBox}">
-                <Setter x:Uid="Setter_1" Property="Padding" Value="4,3,4,2" />
-                <Setter x:Uid="Setter_2" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-            </Style>
-            <Style x:Uid="DetailedButtonStyle" x:Key="DetailButtonStyle" TargetType="{x:Type Button}">
-                <Setter x:Uid="Setter_3" Property="MinWidth" Value="75" />
-                <Setter x:Uid="Setter_4" Property="MinHeight" Value="23" />
-                <Setter x:Uid="Setter_5" Property="Padding" Value="10,1,10,1" />
-                <Setter x:Uid="Setter_6" Property="VerticalContentAlignment" Value="Center" />
-                <Setter x:Uid="Setter_61" Property="HorizontalContentAlignment" Value="Center" />
-                <Setter x:Uid="Setter_7" Property="Margin" Value="3,6" />
-                <Setter x:Uid="Setter_8" Property="ToolTipService.ShowOnDisabled" Value="True" />
-            </Style>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
-    <Grid Margin="12" >
+  <Grid Margin="12" >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
