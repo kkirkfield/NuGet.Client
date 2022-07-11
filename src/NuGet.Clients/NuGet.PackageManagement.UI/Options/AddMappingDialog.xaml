@@ -7,7 +7,7 @@
              xmlns:nuget="clr-namespace:NuGet.PackageManagement.UI"
              mc:Ignorable="d" 
              x:Uid="AddMappingDialogWindow"
-             x:Name="AddMappingDialogWindow"
+             AutomationProperties.Name="AddMappingDialogWindow"
              Height="304"
              Width="456"
              ShowInTaskbar="False"
@@ -48,12 +48,12 @@
     </Grid.RowDefinitions>
 
     <StackPanel Grid.Row="0">
-      <Grid Name="TitleGrid"  >
+      <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition  Width="*" ></ColumnDefinition>
           <ColumnDefinition Width="50" ></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Name="TitleTextBlock"
+        <TextBlock AutomationProperties.Name="AddNewPackageNamespace"
                            Grid.Column="0"
                            Text="{x:Static nuget:Resources.VSOptions_Label_AddPackageNamespace}"
                            Margin="12,12,0,0"/>
@@ -68,18 +68,18 @@
           <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
 
-        <vsui:WatermarkedTextBox Grid.Row="0" Name="packageID"  Margin="12,6,12,6" Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}" Background="White" Foreground="Black" />
+        <vsui:WatermarkedTextBox Grid.Row="0" AutomationProperties.Name="Package ID" Name="packageID"  Margin="12,6,12,6" Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}" Background="White" Foreground="Black" />
 
         <StackPanel Orientation="Vertical"  Grid.Row="1">
 
-          <ListView Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Margin="12,0,12,12" Height="184">
+          <ListView  AutomationProperties.Name="Sources List" Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Margin="12,0,12,12" Height="184">
             <ListView.View>
               <GridView>
                 <!-- checkbox column -->
-                <GridViewColumn Width="Auto">
+                <GridViewColumn>
                   <GridViewColumn.CellTemplate>
                     <DataTemplate>
-                      <CheckBox
+                      <CheckBox AutomationProperties.Name="SourcesCheckBox"
                   IsTabStop="False"
                   IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>
                     </DataTemplate>
@@ -87,13 +87,14 @@
                 </GridViewColumn>
 
                 <!-- the project column -->
-                <GridViewColumn x:Name="_projectColumn" Width="402">
+                <GridViewColumn x:Name="_projectColumn">
                   <GridViewColumnHeader Content="{x:Static nuget:Resources.VSOptions_Label_Source}" HorizontalContentAlignment="Left"/>
                   <GridViewColumn.CellTemplate>
                     <DataTemplate>
                       <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                                Text="{Binding SourceInfo.Name}" />
+                        
+                        <TextBlock Name="SourceInfo"
+                                Text="{Binding SourceInfo.Name}"/>
                       </StackPanel>
                     </DataTemplate>
                   </GridViewColumn.CellTemplate>
