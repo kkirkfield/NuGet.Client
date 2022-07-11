@@ -43,20 +43,7 @@
               ItemTemplate="{StaticResource MappingItemTemplate}"
                          IsSynchronizedWithCurrentItem="True"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         AutomationProperties.Name="Package Source Mappings" Grid.RowSpan="2">
-      <ListBox.ItemContainerStyle>
-        <Style x:Uid="Style_2">
-          <Setter x:Uid="Setter_10" Property="AutomationProperties.HelpText">
-            <Setter.Value>
-              <MultiBinding StringFormat="{}{0} {1}">
-                <Binding Path="ID"/>
-                <Binding Path="Source"/>
-              </MultiBinding>
-            </Setter.Value>
-          </Setter>
-        </Style>
-      </ListBox.ItemContainerStyle>
-    </ListBox>
+                         AutomationProperties.Name="Package Source Mappings" Grid.RowSpan="2"/>
 
     <Grid Grid.Row="3">
       <Grid.ColumnDefinitions>
