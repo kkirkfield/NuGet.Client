@@ -86,7 +86,7 @@
         <ColumnDefinition Width="101"/>
       </Grid.ColumnDefinitions>
 
-      <Button Grid.Column="0" Width="86" Height="24"  Command="{Binding ShowButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Add}"/>
+      <Button  Grid.Column="0" Width="86" Height="24"  Command="{Binding ShowButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Add}"/>
 
       <Button Grid.Column="1" Width="86" Height="24" Margin = "3,0,0,0" Command="{Binding RemoveButtonCommand}" Content="{x:Static nuget:Resources.VSOptions_Button_Remove}"/>
 
