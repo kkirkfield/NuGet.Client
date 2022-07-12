@@ -86,17 +86,21 @@ namespace NuGet.Options
         private void ExecuteAddButtonCommand(object parameter)
         {
             Close();
-            var tempPkgID = packageID.Text;
-            ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
-            foreach (PackageSourceItem source in sourcesListBox.Items)
+            //does not add mapping if package ID is null
+            if (!string.IsNullOrEmpty(packageID.Text))
             {
-                if (source.IsChecked)
+                var tempPkgID = packageID.Text;
+                ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
+                foreach (PackageSourceItem source in sourcesListBox.Items)
                 {
-                    tempSources.Add(source.SourceInfo);
+                    if (source.IsChecked)
+                    {
+                        tempSources.Add(source.SourceInfo);
+                    }
                 }
+                PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
+                _parent.SourceMappingsCollection.Add(tempPkg);
             }
-            PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
-            _parent.SourceMappingsCollection.Add(tempPkg);
             (_parent.ShowButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
             (_parent.RemoveButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
             (_parent.ClearButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
