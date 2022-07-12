@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -100,9 +101,18 @@ namespace NuGet.Configuration
         {
             var children = new List<T>();
             IEnumerable<T> descendants;
-            if (xElement.Name.LocalName.Equals("packageSourceMapping", StringComparison.OrdinalIgnoreCase))
+            if (xElement.Name.LocalName.Equals(ConfigurationConstants.PackageSourceMapping, StringComparison.OrdinalIgnoreCase))
             {
                 descendants = xElement.Elements().Select(d => Parse(d, origin)).OfType<T>();
+                var duplicatedPackageSource = descendants.Where(node => node.ElementName.Equals(ConfigurationConstants.PackageSourceAttribute, StringComparison.OrdinalIgnoreCase))
+                                            .ToLookup(d => d.Attributes["key"], d => d, StringComparer.OrdinalIgnoreCase)
+                                            .Where(g => g.Count() > 1)
+                                            .ToList();
+                if (duplicatedPackageSource.Any())
+                {
+                    var duplicatedKey = string.Join(", ", duplicatedPackageSource.Select(d => d.Key));
+                    throw new NuGetConfigurationException(string.Format(CultureInfo.CurrentCulture, Resources.Error_DuplicatePackageSource, duplicatedKey));
+                }
             }
             else
             {

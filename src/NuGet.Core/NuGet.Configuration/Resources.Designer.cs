@@ -151,6 +151,15 @@ namespace NuGet.Configuration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PackageSourceMapping is enabled, there are multiple package sources associated with the same key(s): {0}.
+        /// </summary>
+        internal static string Error_DuplicatePackageSource {
+            get {
+                return ResourceManager.GetString("Error_DuplicatePackageSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encryption is not supported on non-Windows platforms..
         /// </summary>
         internal static string Error_EncryptionUnsupported {
