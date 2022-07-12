@@ -73,7 +73,6 @@ namespace NuGet.Configuration
             foreach (var sourceMappingItem in packageSourceMappingsSourceItems)
             {
                 //add or update for all mappings in new mappings
-                //Do I need to check to see if item has changed??
                 if (existingSettingsLookup != null)
                 {
                     AddOrUpdatePackageSourceMappingSourceItem(sourceMappingItem);
@@ -88,16 +87,13 @@ namespace NuGet.Configuration
                 {
                     if (!packageSourceMappingsSourceItems.Contains(sourceItem))
                     {
-                        //Remove(sourceItem);
                         removeMappings.Add(sourceItem);
                     }
                 }
-                //make if statement
                 if (removeMappings != null && removeMappings.Count > 0)
                 {
                     Remove(removeMappings);
                 }
-                //Remove(removeMappings);
             }
         }
     }

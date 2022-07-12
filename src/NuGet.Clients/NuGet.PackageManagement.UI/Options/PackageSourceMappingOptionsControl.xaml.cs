@@ -34,8 +34,6 @@ namespace NuGet.Options
 
         public ICommand ClearButtonCommand { get; set; }
 
-        public bool AddMappingDialogVisibility { get; set; }
-
         private AddMappingDialog _addMappingDialog;
 
         public PackageSourceMappingOptionsControl()
@@ -43,7 +41,6 @@ namespace NuGet.Options
             ShowButtonCommand = new ButtonCommand(ExecuteShowButtonCommand, CanExecuteShowButtonCommand);
             RemoveButtonCommand = new ButtonCommand(ExecuteRemoveButtonCommand, CanExecuteRemoveButtonCommand);
             ClearButtonCommand = new ButtonCommand(ExecuteClearButtonCommand, CanExecuteClearButtonCommand);
-            AddMappingDialogVisibility = true;
             SourceMappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
             DataContext = this;
             InitializeComponent();
@@ -188,7 +185,6 @@ namespace NuGet.Options
             {
                 foreach (PackagePatternItem patternItem in sourceItem.Patterns)
                 {
-                    //do I need to check if list exists for that pattern yet?
                     if (!UISourceMappings.ContainsKey(patternItem.Pattern))
                     {
                         UISourceMappings[patternItem.Pattern] = new ObservableCollection<PackageSourceContextInfo>();
