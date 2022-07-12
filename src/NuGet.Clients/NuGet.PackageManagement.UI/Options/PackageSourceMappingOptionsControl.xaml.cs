@@ -40,14 +40,14 @@ namespace NuGet.Options
 
         public PackageSourceMappingOptionsControl()
         {
-            ShowButtonCommand = new ShowButtonCommand(ExecuteShowButtonCommand, CanExecuteShowButtonCommand);
-            RemoveButtonCommand = new RemoveButtonCommand(ExecuteRemoveButtonCommand, CanExecuteRemoveButtonCommand);
-            ClearButtonCommand = new ClearButtonCommand(ExecuteClearButtonCommand, CanExecuteClearButtonCommand);
+            ShowButtonCommand = new ButtonCommand(ExecuteShowButtonCommand, CanExecuteShowButtonCommand);
+            RemoveButtonCommand = new ButtonCommand(ExecuteRemoveButtonCommand, CanExecuteRemoveButtonCommand);
+            ClearButtonCommand = new ButtonCommand(ExecuteClearButtonCommand, CanExecuteClearButtonCommand);
             AddMappingDialogVisibility = true;
             SourceMappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
             DataContext = this;
             InitializeComponent();
-            (ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
+            (ShowButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
 
         internal async Task InitializeOnActivatedAsync(CancellationToken cancellationToken)
@@ -70,8 +70,8 @@ namespace NuGet.Options
                 SourceMappingsCollection.Add(item);
             }
             //make sure all buttons show on open if there are already sourcemappings
-            (ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
-            (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
+            (ClearButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
+            (RemoveButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
         private void ExecuteShowButtonCommand(object parameter)
         {
@@ -88,23 +88,23 @@ namespace NuGet.Options
         private void ExecuteRemoveButtonCommand(object parameter)
         {
             SourceMappingsCollection.Remove((PackageItem)packageList.SelectedItem);
-            (ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
+            (ClearButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
 
         private bool CanExecuteRemoveButtonCommand(object parameter)
         {
-            return true;
+            return SourceMappingsCollection.Count > 0;
         }
 
         private void ExecuteClearButtonCommand(object parameter)
         {
             SourceMappingsCollection.Clear();
-            (RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
+            (RemoveButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
 
         private bool CanExecuteClearButtonCommand(object parameter)
         {
-            return true;
+            return SourceMappingsCollection.Count > 0;
         }
 
         internal bool ApplyChangedSettings()
@@ -178,15 +178,6 @@ namespace NuGet.Options
                 }
             }
             return false;
-        }
-
-        //returns list of mappings from config
-        private IReadOnlyList<PackageSourceMappingSourceItem> GetOriginalMappings()
-        {
-            var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
-            var settings = componentModel.GetService<ISettings>();
-            PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
-            return packageSourceMappingProvider.GetPackageSourceMappingItems();
         }
 
         //converts from list of packagesourcemappingsourceItems to a dictonary that can be read by UI

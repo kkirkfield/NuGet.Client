@@ -87,13 +87,10 @@
     <Compile Include="Models\LicenseFileText.cs" />
     <Compile Include="Models\PackageItemDeprecationLabelState.cs" />
     <Compile Include="OptionsViewModel.cs" />
-    <Compile Include="Options\AddButtonCommand.cs" />
+    <Compile Include="Options\ButtonCommand.cs" />
     <Compile Include="Options\AddMappingDialog.xaml.cs">
       <DependentUpon>AddMappingDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\ClearButtonCommand.cs" />
-    <Compile Include="Options\HideButtonCommand.cs" />
-    <Compile Include="Options\IsCheckedCommand.cs" />
     <Compile Include="Options\PackageItem.cs" />
     <Compile Include="Options\PackageSourceItem.cs" />
     <Compile Include="Options\PackageSourceMappingOptionsControl.xaml.cs">
@@ -102,8 +99,6 @@
     <Compile Include="Options\PackageSourceMappingOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Options\RemoveButtonCommand.cs" />
-    <Compile Include="Options\ShowButtonCommnad.cs" />
     <Compile Include="Utility\IReconnectingNuGetSearchService.cs" />
     <Compile Include="Utility\NuGetSearchServiceReconnector.cs" />
     <Compile Include="ViewModels\LoadingStatusViewModel.cs" />

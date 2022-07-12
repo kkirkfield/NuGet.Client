@@ -7,14 +7,14 @@ using System.Windows.Input;
 
 namespace NuGet.Options
 {
-    internal class IsCheckedCommand : ICommand
+    internal class ButtonCommand : ICommand
     {
         private Action<object> _action;
         private Func<object, bool> _canExecute;
-        public IsCheckedCommand(Action<object> executeAddButtonCommand, Func<object, bool> canExecuteAddButtonCommand)
+        public ButtonCommand(Action<object> executeButtonCommand, Func<object, bool> canExecuteButtonCommand)
         {
-            _action = executeAddButtonCommand;
-            _canExecute = canExecuteAddButtonCommand;
+            _action = executeButtonCommand;
+            _canExecute = canExecuteButtonCommand;
         }
 
         public event EventHandler CanExecuteChanged;

@@ -42,8 +42,8 @@ namespace NuGet.Options
         public AddMappingDialog(PackageSourceMappingOptionsControl parent)
         {
             _parent = parent;
-            HideButtonCommand = new HideButtonCommand(ExecuteHideButtonCommand, CanExecuteHideButtonCommand);
-            AddButtonCommand = new AddButtonCommand(ExecuteAddButtonCommand, CanExecuteAddButtonCommand);
+            HideButtonCommand = new ButtonCommand(ExecuteHideButtonCommand, CanExecuteHideButtonCommand);
+            AddButtonCommand = new ButtonCommand(ExecuteAddButtonCommand, CanExecuteAddButtonCommand);
             SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
             DataContext = this;
             InitializeComponent();
@@ -75,7 +75,7 @@ namespace NuGet.Options
         private void ExecuteHideButtonCommand(object parameter)
         {
             Close();
-            (_parent.ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
+            (_parent.ShowButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
 
         private bool CanExecuteHideButtonCommand(object parameter)
@@ -97,9 +97,9 @@ namespace NuGet.Options
             }
             PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
             _parent.SourceMappingsCollection.Add(tempPkg);
-            (_parent.ShowButtonCommand as ShowButtonCommand).InvokeCanExecuteChanged();
-            (_parent.RemoveButtonCommand as RemoveButtonCommand).InvokeCanExecuteChanged();
-            (_parent.ClearButtonCommand as ClearButtonCommand).InvokeCanExecuteChanged();
+            (_parent.ShowButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
+            (_parent.RemoveButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
+            (_parent.ClearButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
         }
 
         private bool CanExecuteAddButtonCommand(object parameter)
