@@ -56,7 +56,7 @@ namespace NuGet.Options
             var tempString = "";
             tempString += "Package ID: ";
             tempString += ID;
-            tempString += "Sources: ";
+            tempString += " Sources: ";
             for (int i = 0; i < Sources.Count; i++)
             {
                 tempString += Sources[i].ToString();
