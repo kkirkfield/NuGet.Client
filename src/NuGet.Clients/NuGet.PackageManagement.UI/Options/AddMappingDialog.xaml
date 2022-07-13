@@ -26,12 +26,32 @@
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="50"/>
+          <ColumnDefinition Width="24"/>
         </Grid.ColumnDefinitions>
         <TextBlock AutomationProperties.Name="AddNewPackageNamespace"
                    Grid.Column="0"
                    Text="{x:Static nuget:Resources.VSOptions_Label_AddPackageNamespace}"
                    Margin="12,12,0,0"/>
+        <Button x:Uid="ButtonClose"
+                       Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="0,6,6,0"
+                       Command="{Binding HideButtonCommand}"
+                       AutomationProperties.Name="Close"
+                       IsCancel="True"
+                       Background="White"
+                       BorderBrush="Transparent"
+                       BorderThickness="0">
+          <Canvas x:Uid="canvas" Width="12" Height="10" Background="White">
+            <Path x:Uid="CloseButtonPath"
+                  Width="10"
+                  Height="8"
+                  Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                  Stretch="Uniform"
+                  Data="F1 M 0,0L 2,0L 5,3L 8,0L 10,0L 6,4L 10,8L 8,8L 5,5L 2,8L 0,8L 4,4L 0,0 Z" />
+          </Canvas>
+        </Button>
       </Grid>
     </StackPanel>
     <StackPanel Grid.Row="1">
