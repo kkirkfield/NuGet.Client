@@ -29,7 +29,7 @@ namespace NuGet.Options
 
         public ICommand AddButtonCommand { get; set; }
 
-        public ItemsChangeObservableCollection<PackageSourceItem> SourcesCollection { get; private set; } //change to package s
+        public ItemsChangeObservableCollection<PackageSourceContextInfoChecked> SourcesCollection { get; private set; } //change to package s
 
         private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
 
@@ -44,7 +44,7 @@ namespace NuGet.Options
             _parent = parent;
             HideButtonCommand = new ButtonCommand(ExecuteHideButtonCommand, CanExecuteHideButtonCommand);
             AddButtonCommand = new ButtonCommand(ExecuteAddButtonCommand, CanExecuteAddButtonCommand);
-            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceItem>();
+            SourcesCollection = new ItemsChangeObservableCollection<PackageSourceContextInfoChecked>();
             DataContext = this;
             InitializeComponent();
             CancellationToken cancellationToken = new CancellationToken(false);
@@ -66,7 +66,7 @@ namespace NuGet.Options
             SourcesCollection.Clear();
             foreach (var source in _originalPackageSources)
             {
-                var tempSource = new PackageSourceItem(source, false);
+                var tempSource = new PackageSourceContextInfoChecked(source, false);
                 SourcesCollection.Add(tempSource);
             }
             var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
@@ -91,7 +91,7 @@ namespace NuGet.Options
             {
                 var tempPkgID = packageID.Text;
                 ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
-                foreach (PackageSourceItem source in sourcesListBox.Items)
+                foreach (PackageSourceContextInfoChecked source in sourcesListBox.Items)
                 {
                     if (source.IsChecked)
                     {
