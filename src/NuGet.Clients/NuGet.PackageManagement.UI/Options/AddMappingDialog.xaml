@@ -15,7 +15,8 @@
              AllowsTransparency="True"
              WindowStartupLocation="CenterOwner"
              BorderBrush="{DynamicResource {x:Static vsui:EnvironmentColors.PanelBorderBrushKey}}"
-             BorderThickness="1">
+             BorderThickness="1"
+             Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="30"/>
@@ -40,10 +41,10 @@
                        Command="{Binding HideButtonCommand}"
                        AutomationProperties.Name="Close"
                        IsCancel="True"
-                       Background="White"
                        BorderBrush="Transparent"
-                       BorderThickness="0">
-          <Canvas x:Uid="canvas" Width="12" Height="10" Background="White">
+                       BorderThickness="0"
+                       Background="{Binding Path=(Window.Background), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+          <Canvas x:Uid="canvas" Width="12" Height="10">
             <Path x:Uid="CloseButtonPath"
                   Width="10"
                   Height="8"
@@ -61,9 +62,19 @@
           <RowDefinition Height="*"/>
           <RowDefinition Height="36"/>
         </Grid.RowDefinitions>
-        <vsui:WatermarkedTextBox Grid.Row="0" AutomationProperties.Name="Package ID" Name="packageID"  Margin="12,6,12,6" Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}" Background="White" Foreground="Black"/>
+        <vsui:WatermarkedTextBox Grid.Row="0"
+                                 AutomationProperties.Name="Package ID"
+                                 Name="packageID"
+                                 Margin="12,6,12,6"
+                                 Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}"
+                                 Foreground="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                 Background="{Binding Path=(Window.Background), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         <StackPanel Orientation="Vertical"  Grid.Row="1">
-          <ListView AutomationProperties.Name="Sources List" Name="sourcesListBox" ItemsSource="{Binding SourcesCollection}" Margin="12,0,12,12" Height="184">
+          <ListView AutomationProperties.Name="Sources List"
+                    Name="sourcesListBox"
+                    ItemsSource="{Binding SourcesCollection}"
+                    Margin="12,0,12,12"
+                    Height="184">
             <ListView.View>
               <GridView>
                 <!-- checkbox column -->
@@ -82,7 +93,6 @@
                   <GridViewColumn.CellTemplate>
                     <DataTemplate>
                       <StackPanel Orientation="Horizontal">
-
                         <TextBlock Name="SourceInfo"
                                 Text="{Binding SourceInfo.Name}"/>
                       </StackPanel>
