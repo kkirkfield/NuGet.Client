@@ -206,7 +206,7 @@ namespace NuGet.Options
             Dictionary<string, ObservableCollection<PackagePatternItem>> mappingsDictonary = new Dictionary<string, ObservableCollection<PackagePatternItem>>();
             foreach (var packageItem in UISourceMappings)
             {
-                foreach (var source in packageItem.GetSources())
+                foreach (var source in packageItem.Sources)
                 {
                     //Contains method did not work since diff instances of packageitem even though name is the same
                     //made own contains method
@@ -222,7 +222,7 @@ namespace NuGet.Options
                     {
                         mappingsDictonary[source.Name] = new ObservableCollection<PackagePatternItem>();
                     }
-                    PackagePatternItem tempID = new PackagePatternItem(packageItem.GetID());
+                    PackagePatternItem tempID = new PackagePatternItem(packageItem.ID);
                     bool newID = true;
                     foreach (var id in mappingsDictonary[source.Name])
                     {
