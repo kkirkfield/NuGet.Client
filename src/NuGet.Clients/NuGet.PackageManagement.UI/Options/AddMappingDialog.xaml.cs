@@ -1,24 +1,14 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Build.Utilities;
 using Microsoft.ServiceHub.Framework;
 using NuGet.PackageManagement.UI;
-using NuGet.PackageManagement.VisualStudio;
-using NuGet.VisualStudio.Common;
 using NuGet.VisualStudio;
+using NuGet.VisualStudio.Common;
 using NuGet.VisualStudio.Internal.Contracts;
-using NuGet.Configuration;
-using System.Collections.Generic;
 using Task = System.Threading.Tasks.Task;
-using Resx = NuGet.PackageManagement.UI.Resources;
-using Microsoft.VisualStudio.Services.Common;
-using Microsoft.Internal.VisualStudio.PlatformUI;
-
-using Microsoft.VisualStudio.Shell;
 
 
 namespace NuGet.Options
@@ -29,7 +19,7 @@ namespace NuGet.Options
 
         public ICommand AddButtonCommand { get; set; }
 
-        public ItemsChangeObservableCollection<PackageSourceContextInfoChecked> SourcesCollection { get; private set; } //change to package s
+        public ItemsChangeObservableCollection<PackageSourceContextInfoChecked> SourcesCollection { get; private set; }
 
         private IReadOnlyList<PackageSourceContextInfo> _originalPackageSources;
 

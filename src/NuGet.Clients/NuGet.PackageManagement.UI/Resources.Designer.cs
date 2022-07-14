@@ -2340,7 +2340,7 @@ namespace NuGet.PackageManagement.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add New Package Namespace.
+        ///   Looks up a localized string similar to Add New Package Source Mapping.
         /// </summary>
         public static string VSOptions_Label_AddPackageNamespace {
             get {

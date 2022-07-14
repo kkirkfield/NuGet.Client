@@ -45,11 +45,8 @@ namespace NuGet.Options
         /// immediately hits enter causing the window to close without firing the combobox LostFocus event.
         /// </summary>
         /// <param name="e">Event arguments.</param>
-
         protected override void OnApply(PageApplyEventArgs e)
         {
-            // base.OnApply(e); // Saves the user's changes.
-            //change this to not async and for mappings
             bool wasApplied = PackageSourceMappingControl.ApplyChangedSettings();
             if (!wasApplied)
             {
@@ -76,7 +73,6 @@ namespace NuGet.Options
 
             }, Resources.PackageSourceOptions_OnActivated);
         }
-
 
         private async Task OnActivateAsync(CancelEventArgs e, CancellationToken cancellationToken)
         {

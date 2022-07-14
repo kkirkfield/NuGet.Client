@@ -14,14 +14,11 @@ namespace NuGet.PackageManagement.UI
     /// <typeparam name="T"></typeparam>
     public class ItemsChangeObservableCollection<T> : ObservableCollection<T>
     {
-        public ItemsChangeObservableCollection() : base()
-        {
+        public ItemsChangeObservableCollection()
+            : base() { }
 
-        }
-        public ItemsChangeObservableCollection(IEnumerable<T> collection) : base(collection)
-        {
-
-        }
+        public ItemsChangeObservableCollection(IEnumerable<T> collection)
+            : base(collection) { }
         public void Refresh()
         {
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -33,9 +30,7 @@ namespace NuGet.PackageManagement.UI
             {
                 Items.Add(item);
             }
-
             Refresh();
         }
-
     }
 }
