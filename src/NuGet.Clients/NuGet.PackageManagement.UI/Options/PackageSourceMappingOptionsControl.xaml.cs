@@ -7,18 +7,16 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.ServiceHub.Framework;
-
 using Microsoft.VisualStudio.Shell;
 using NuGet.Configuration;
 using NuGet.PackageManagement.UI;
 using NuGet.VisualStudio;
 using NuGet.VisualStudio.Common;
 using NuGet.VisualStudio.Internal.Contracts;
-using Task = System.Threading.Tasks.Task;
 using Resx = NuGet.PackageManagement.UI.Resources;
-using Microsoft.VisualStudio.Services.Common;
-using Microsoft.Internal.VisualStudio.PlatformUI;
+using Task = System.Threading.Tasks.Task;
 
 namespace NuGet.Options
 {
