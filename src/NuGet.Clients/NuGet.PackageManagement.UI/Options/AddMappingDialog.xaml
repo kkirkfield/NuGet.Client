@@ -64,14 +64,14 @@
         </Grid.RowDefinitions>
         <vsui:WatermarkedTextBox Grid.Row="0"
                                  AutomationProperties.Name="Package ID"
-                                 Name="packageID"
+                                 x:Name="packageID"
                                  Margin="12,6,12,6"
                                  Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}"
                                  Foreground="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                                  Background="{Binding Path=(Window.Background), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         <StackPanel Orientation="Vertical"  Grid.Row="1">
-          <ListView AutomationProperties.Name="Sources List"
-                    Name="sourcesListBox"
+          <nuget:ProjectsListView AutomationProperties.Name="Sources List"
+                    x:Name="sourcesListBox"
                     ItemsSource="{Binding SourcesCollection}"
                     Margin="12,0,12,12"
                     Height="184">
@@ -101,7 +101,7 @@
                 </GridViewColumn>
               </GridView>
             </ListView.View>
-          </ListView>
+          </nuget:ProjectsListView>
         </StackPanel>
       </Grid>
     </StackPanel>
