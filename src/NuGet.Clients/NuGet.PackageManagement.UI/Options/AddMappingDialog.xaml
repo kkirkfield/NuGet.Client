@@ -65,6 +65,7 @@
         <vsui:WatermarkedTextBox Grid.Row="0"
                                  AutomationProperties.Name="Package ID"
                                  x:Name="packageID"
+                                 MaxLength="100"
                                  Margin="12,6,12,6"
                                  Watermark="{x:Static nuget:Resources.VSOptions_Watermark_AddPackageNamespace}"
                                  Foreground="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
