@@ -40,7 +40,7 @@
              ItemTemplate="{StaticResource MappingItemTemplate}"
              IsSynchronizedWithCurrentItem="True"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
-             AutomationProperties.Name="Package Source Mappings" Grid.RowSpan="2"/>
+             AutomationProperties.Name="{x:Static nuget:Resources.VSOptions_Label_PackageSourceMappings}" Grid.RowSpan="2"/>
     <Grid Grid.Row="3">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="101"/>
