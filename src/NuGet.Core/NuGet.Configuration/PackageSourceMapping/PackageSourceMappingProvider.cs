@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace NuGet.Configuration
@@ -67,33 +66,31 @@ namespace NuGet.Configuration
                 throw new ArgumentNullException(nameof(packageSourceMappingsSourceItems));
             }
 
-
             var existingSettingsLookup = GetPackageSourceMappingItems();
+
+            if (existingSettingsLookup != null)
+            {
+                return;
+            }
 
             foreach (var sourceMappingItem in packageSourceMappingsSourceItems)
             {
                 //add or update for all mappings in new mappings
-                if (existingSettingsLookup != null)
-                {
-                    AddOrUpdatePackageSourceMappingSourceItem(sourceMappingItem);
-                }
+                AddOrUpdatePackageSourceMappingSourceItem(sourceMappingItem);
             }
 
             //Remove all old mappings not in new mappings
-            if (existingSettingsLookup != null)
+            List<PackageSourceMappingSourceItem> removeMappings = new List<PackageSourceMappingSourceItem>();
+            foreach (var sourceItem in existingSettingsLookup)
             {
-                ObservableCollection<PackageSourceMappingSourceItem> removeMappings = new ObservableCollection<PackageSourceMappingSourceItem>();
-                foreach (var sourceItem in existingSettingsLookup)
+                if (!packageSourceMappingsSourceItems.Contains(sourceItem))
                 {
-                    if (!packageSourceMappingsSourceItems.Contains(sourceItem))
-                    {
-                        removeMappings.Add(sourceItem);
-                    }
+                    removeMappings.Add(sourceItem);
                 }
-                if (removeMappings != null && removeMappings.Count > 0)
-                {
-                    Remove(removeMappings);
-                }
+            }
+            if (removeMappings != null && removeMappings.Count > 0)
+            {
+                Remove(removeMappings);
             }
         }
     }
