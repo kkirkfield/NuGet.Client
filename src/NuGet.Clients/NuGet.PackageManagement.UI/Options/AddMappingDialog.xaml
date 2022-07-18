@@ -1,4 +1,4 @@
-<Window x:Class="NuGet.Options.AddMappingDialog"
+<nuget:VsDialogWindow x:Class="NuGet.Options.AddMappingDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -117,4 +117,4 @@
       </StackPanel>
     </Grid>
   </Grid>
-</Window>
+</nuget:VsDialogWindow>

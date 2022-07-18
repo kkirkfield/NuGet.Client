@@ -13,7 +13,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace NuGet.Options
 {
-    public partial class AddMappingDialog : Window
+    public partial class AddMappingDialog : VsDialogWindow
     {
         public ICommand HideButtonCommand { get; set; }
 
