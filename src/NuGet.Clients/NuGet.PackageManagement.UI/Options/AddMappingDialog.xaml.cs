@@ -54,9 +54,9 @@ namespace NuGet.Options
             //show package sources on open
             _originalPackageSources = await _nugetSourcesService.GetPackageSourcesAsync(cancellationToken);
             SourcesCollection.Clear();
-            foreach (var source in _originalPackageSources)
+            foreach (PackageSourceContextInfo source in _originalPackageSources)
             {
-                var tempSource = new PackageSourceContextInfoChecked(source, false);
+                PackageSourceContextInfoChecked tempSource = new PackageSourceContextInfoChecked(source, false);
                 SourcesCollection.Add(tempSource);
             }
             var componentModel = NuGetUIThreadHelper.JoinableTaskFactory.Run(ServiceLocator.GetComponentModelAsync);
@@ -79,8 +79,8 @@ namespace NuGet.Options
             //does not add mapping if package ID is null
             if (!string.IsNullOrEmpty(packageID.Text))
             {
-                var tempPkgID = packageID.Text;
-                ObservableCollection<PackageSourceContextInfo> tempSources = new ObservableCollection<PackageSourceContextInfo>();
+                string tempPkgID = packageID.Text;
+                List<PackageSourceContextInfo> tempSources = new List<PackageSourceContextInfo>();
                 foreach (PackageSourceContextInfoChecked source in sourcesListBox.Items)
                 {
                     if (source.IsChecked)

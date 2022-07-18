@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using NuGet.VisualStudio.Internal.Contracts;
 
 namespace NuGet.Options
@@ -6,7 +6,7 @@ namespace NuGet.Options
     public class PackageItem
     {
         public string ID { get; set; }
-        public ObservableCollection<PackageSourceContextInfo> Sources { get; private set; }
+        public List<PackageSourceContextInfo> Sources { get; private set; }
 
         //View binds to this string
         public string SourcesString
@@ -26,7 +26,7 @@ namespace NuGet.Options
             }
         }
 
-        public PackageItem(string packageid, ObservableCollection<PackageSourceContextInfo> packageSources)
+        public PackageItem(string packageid, List<PackageSourceContextInfo> packageSources)
         {
             ID = packageid;
             Sources = packageSources;

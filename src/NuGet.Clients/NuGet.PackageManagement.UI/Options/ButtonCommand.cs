@@ -26,6 +26,5 @@ namespace NuGet.Options
             _action(parameter);
             InvokeCanExecuteChanged();
         }
-
     }
 }

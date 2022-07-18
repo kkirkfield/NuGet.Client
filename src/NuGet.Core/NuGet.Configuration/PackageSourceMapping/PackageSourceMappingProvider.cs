@@ -68,12 +68,12 @@ namespace NuGet.Configuration
 
             var existingSettingsLookup = GetPackageSourceMappingItems();
 
-            if (existingSettingsLookup != null)
+            if (existingSettingsLookup == null)
             {
                 return;
             }
 
-            foreach (var sourceMappingItem in packageSourceMappingsSourceItems)
+            foreach (PackageSourceMappingSourceItem sourceMappingItem in packageSourceMappingsSourceItems)
             {
                 //add or update for all mappings in new mappings
                 AddOrUpdatePackageSourceMappingSourceItem(sourceMappingItem);
@@ -81,7 +81,7 @@ namespace NuGet.Configuration
 
             //Remove all old mappings not in new mappings
             List<PackageSourceMappingSourceItem> removeMappings = new List<PackageSourceMappingSourceItem>();
-            foreach (var sourceItem in existingSettingsLookup)
+            foreach (PackageSourceMappingSourceItem sourceItem in existingSettingsLookup)
             {
                 if (!packageSourceMappingsSourceItems.Contains(sourceItem))
                 {

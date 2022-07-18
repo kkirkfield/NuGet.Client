@@ -57,10 +57,10 @@ namespace NuGet.Options
             var settings = componentModelMapping.GetService<ISettings>();
             PackageSourceMappingProvider packageSourceMappingProvider = new PackageSourceMappingProvider(settings);
             _originalPackageSourceMappings = packageSourceMappingProvider.GetPackageSourceMappingItems();
-            ObservableCollection<PackageItem> SourceMappingsCollectiontemp = ReadMappingsFromConfigToUI(_originalPackageSourceMappings);
+            IReadOnlyList<PackageItem> SourceMappingsCollectiontemp = ReadMappingsFromConfigToUI(_originalPackageSourceMappings);
             //clear sourcemappings so that they don't repeat
             SourceMappingsCollection.Clear();
-            foreach (var item in SourceMappingsCollectiontemp)
+            foreach (PackageItem item in SourceMappingsCollectiontemp)
             {
                 SourceMappingsCollection.Add(item);
             }
@@ -176,42 +176,41 @@ namespace NuGet.Options
         }
 
         //converts from list of packagesourcemappingsourceItems to a dictonary that can be read by UI
-        private ItemsChangeObservableCollection<PackageItem> ReadMappingsFromConfigToUI(IReadOnlyList<PackageSourceMappingSourceItem> originalMappings)
+        private IReadOnlyList<PackageItem> ReadMappingsFromConfigToUI(IReadOnlyList<PackageSourceMappingSourceItem> originalMappings)
         {
-            Dictionary<string, ObservableCollection<PackageSourceContextInfo>> UISourceMappings = new Dictionary<string, ObservableCollection<PackageSourceContextInfo>>();
+            Dictionary<string, List<PackageSourceContextInfo>> UISourceMappings = new Dictionary<string, List<PackageSourceContextInfo>>();
             foreach (PackageSourceMappingSourceItem sourceItem in originalMappings)
             {
                 foreach (PackagePatternItem patternItem in sourceItem.Patterns)
                 {
                     if (!UISourceMappings.ContainsKey(patternItem.Pattern))
                     {
-                        UISourceMappings[patternItem.Pattern] = new ObservableCollection<PackageSourceContextInfo>();
+                        UISourceMappings[patternItem.Pattern] = new List<PackageSourceContextInfo>();
                     }
                     UISourceMappings[patternItem.Pattern].Add(new PackageSourceContextInfo(sourceItem.Key));
                 }
             }
-            ItemsChangeObservableCollection<PackageItem> mappingsCollection = new ItemsChangeObservableCollection<PackageItem>();
+            List<PackageItem> mappingsCollection = new List<PackageItem>();
             foreach (string packageID in UISourceMappings.Keys)
             {
                 PackageItem temp = new PackageItem(packageID, UISourceMappings[packageID]);
                 mappingsCollection.Add(temp);
             }
-
-            return mappingsCollection;
+            return mappingsCollection.AsReadOnly();
         }
 
         //converts from dictonary created by UI to list of packageSourceMappingSourceItems
-        private ObservableCollection<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(ItemsChangeObservableCollection<PackageItem> UISourceMappings)
+        private IReadOnlyList<PackageSourceMappingSourceItem> ReadMappingsFromUIToConfig(ItemsChangeObservableCollection<PackageItem> UISourceMappings)
         {
-            Dictionary<string, ObservableCollection<PackagePatternItem>> mappingsDictonary = new Dictionary<string, ObservableCollection<PackagePatternItem>>();
-            foreach (var packageItem in UISourceMappings)
+            Dictionary<string, List<PackagePatternItem>> mappingsDictonary = new Dictionary<string, List<PackagePatternItem>>();
+            foreach (PackageItem packageItem in UISourceMappings)
             {
-                foreach (var source in packageItem.Sources)
+                foreach (PackageSourceContextInfo source in packageItem.Sources)
                 {
                     //Contains method did not work since diff instances of packageitem even though name is the same
                     //made own contains method
                     bool newSource = true;
-                    foreach (var mapping in mappingsDictonary.Keys)
+                    foreach (string mapping in mappingsDictonary.Keys)
                     {
                         if (mapping == source.Name)
                         {
@@ -220,11 +219,11 @@ namespace NuGet.Options
                     }
                     if (newSource == true)
                     {
-                        mappingsDictonary[source.Name] = new ObservableCollection<PackagePatternItem>();
+                        mappingsDictonary[source.Name] = new List<PackagePatternItem>();
                     }
                     PackagePatternItem tempID = new PackagePatternItem(packageItem.ID);
                     bool newID = true;
-                    foreach (var id in mappingsDictonary[source.Name])
+                    foreach (PackagePatternItem id in mappingsDictonary[source.Name])
                     {
                         if (id.Pattern == tempID.Pattern)
                         {
@@ -239,13 +238,13 @@ namespace NuGet.Options
             }
 
             //turn dictonary to observable collection of packageSourceMappingSourceItem
-            ObservableCollection<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = new ObservableCollection<PackageSourceMappingSourceItem>();
-            foreach (var source in mappingsDictonary.Keys)
+            List<PackageSourceMappingSourceItem> packageSourceMappingsSourceItems = new List<PackageSourceMappingSourceItem>();
+            foreach (string source in mappingsDictonary.Keys)
             {
                 PackageSourceMappingSourceItem temp = new PackageSourceMappingSourceItem(source, mappingsDictonary[source]);
                 packageSourceMappingsSourceItems.Add(temp);
             }
-            return packageSourceMappingsSourceItems;
+            return packageSourceMappingsSourceItems.AsReadOnly();
         }
     }
 }
