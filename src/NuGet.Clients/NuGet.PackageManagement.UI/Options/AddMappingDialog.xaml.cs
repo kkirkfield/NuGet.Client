@@ -88,7 +88,7 @@ namespace NuGet.Options
                         tempSources.Add(source.SourceInfo);
                     }
                 }
-                PackageItem tempPkg = new PackageItem(tempPkgID, tempSources);
+                MappingUIDisplay tempPkg = new MappingUIDisplay(tempPkgID, tempSources);
                 _parent.SourceMappingsCollection.Add(tempPkg);
             }
             (_parent.ShowButtonCommand as ButtonCommand).InvokeCanExecuteChanged();
